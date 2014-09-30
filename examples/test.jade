@@ -1,0 +1,15 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='author', content=$$('front/author/@fullname'))
+    meta(name='keywords', content=$$('front/keyword/text()'))
+    meta(name='description', content=$$('front/abstract/t/text()').join(' '))
+    meta(name='generator', content=version)
+    title= $('front/title/text()')
+    link(rel='stylesheet', type='text/css', href='local.css')
+  body
+    - each s in $$('middle/section')
+      .section(id=$('@anchor', s))= $('@title', s)
+        - each t in $$('t/text()', s)
+          p= t

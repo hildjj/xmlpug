@@ -1,0 +1,28 @@
+<rfc xml:lang="en">
+  <front>
+    <title abbrev="xmljade test">XML source to convert with Jade</title>
+    <author initials="J." surname="Hildebrand" fullname="Joe Hildebrand" role="editor">
+      <organization>Cisco Systems, Inc.</organization>
+    </author>
+    <author initials="H." surname="Flanagan" fullname="Heather Flanagan" role="editor">
+      <organization>RFC Editor</organization>
+    </author>
+    <date year="2014" month="September" day="30"/>
+    <keyword>html</keyword>
+    <keyword>xml</keyword>
+    <keyword>jade</keyword>
+    <abstract>
+      <t>This is an example XML document.</t>
+    </abstract>
+  </front>
+  <middle>
+    <section anchor="introduction" title="Introduction">
+      <t>This is a sample document</t>
+      <t>It has paragraphs, which are spelled &lt;t&gt; in xml2rfc</t>
+    </section>
+    <section anchor="second" title="Second Section">
+      <t>This is the section for the people in Chicago.</t>
+    </section>
+  </middle>
+</rfc>
+
