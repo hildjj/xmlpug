@@ -10,7 +10,7 @@ fix = (r)->
     when 'text' then r.text()
     else r
 
-@transform = transform = (xmldata, jadedata, options={pretty:true}) ->
+@transform = transform = (jadedata, xmldata, options={pretty:true}) ->
   xmldoc = xml.parseXmlString xmldata
   fn = jade.compile jadedata, options
   fn
@@ -39,7 +39,7 @@ fix = (r)->
       if err?
         return cb(err)
       options.filename = jade
-      cb null, transform(xmldata, jadedata, options)
+      cb null, transform(jadedata, xmldata, options)
 
 @cmd = (args) ->
   program = require 'commander'
