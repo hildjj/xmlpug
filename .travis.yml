@@ -6,3 +6,6 @@ install:
 - npm install
 script:
 - npm run-script ci
+env:
+  global:
+    secure: lCRGuQxhmDWGO+AKg4io7orgvTX2hlnVTH4hZj8nZJI+9KeZo3u5E8b3BBKCWZaIp6WSAnmb0GAc4H7Y8oPvVPvsZDAIvEOlTIgtkmYXDUKIvEsyFDtz69cjXD7TQ3x0XpnB1kbrJClsBA/2VTd3yEe5BskFqpzX5o7trKCT/sg=
