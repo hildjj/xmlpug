@@ -1,8 +1,19 @@
-Use [Jade](https://github.com/visionmedia/jade) to transform XML, instead of XSLT.  Why?  At my office, we call the XSLT book the *Token of Pain*.  Whoever touched the XSLT code last has it on their desk, and is responsible for being the current expert.  That person hates their life until someone else needs the book badly enough to take on the pain.
+Use [Jade](https://github.com/visionmedia/jade) to transform XML, instead of
+[XSLT](http://www.w3.org/TR/xslt).  Why?  At my office, we call the XSLT book 
+the *Token of Pain*.  Whoever touched the XSLT code last has it on their desk, 
+and is responsible for being the current expert.  That person hates their 
+life until someone else needs the book badly enough to take on the pain.
 
-Also, you can't easily generate HTML5 with XSLT because of the doctype and tags like `<meta>` that don't get closed.
+Also, you can't easily generate HTML5 with XSLT because of the doctype and tags
+like `<meta>` that don't get closed.
 
-Instead, write templates like this:
+# Installation
+
+    npm install -g xmljade
+
+# Example
+
+Write templates like this:
 
 ```
 doctype html
@@ -39,6 +50,8 @@ the above template would generate:
 </html>
 ```
 
+# Jade Extensions
+
 The added JavaScript features available in the template are:
 
 - `$(string, element)`: perform an XPath query against the input document, returning the first match.  Text nodes are converted to strings, and attribute nodes are converted to the string versions of their values. If no matches are found, returns `null`.  If an element is provided, search within that element, otherwise search from the root of the input document.
@@ -46,3 +59,16 @@ The added JavaScript features available in the template are:
 - `$att(element, string)`: gets the text value of an attribute from an element with the name specified in the string.  Returns `null` on errors.
 - `slug(string)`: generate the lowercase sluggified version for the input string.  For example, "Foo Bar" gets converted to "foo-bar".  Returns `null` on errors.
 - `version`: the name and version number of xmljade
+
+# Command Line
+
+
+    Usage: xmljade [options] <template> <input>
+
+    Options:
+
+      -h, --help           output usage information
+      -V, --version        output the version number
+      -d, --debug          Add Jade debug information
+      -o, --output [file]  Output file
+      -p, --pretty         Pretty print
