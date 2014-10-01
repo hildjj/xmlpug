@@ -28,6 +28,9 @@ fix = (r)->
     version: "#{pkg.name} v#{pkg.version}"
 
 @transformFile = (jade, xml, options={pretty:true}, cb) ->
+  if typeof options == 'function'
+    [cb, options] = [options, {}]
+
   if !cb?
     cb = ->
       # no-op
