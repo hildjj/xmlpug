@@ -62,7 +62,7 @@ module.exports = function(grunt) {
     },
     watch: {
       all: {
-        files: ['src/*.coffee', 'test/*.coffee'],
+        files: ['src/*.coffee', 'test/*.coffee', 'examples/*.jade', 'examples/*.xml'],
         tasks: ['test', 'shell:istanbul'],
         options: {
           livereload: true

@@ -7,9 +7,14 @@ html(lang='en')
     meta(name='description', content=$$('front/abstract/t/text()').join(' '))
     meta(name='generator', content=version)
     title= $('front/title/text()')
-    link(rel='stylesheet', type='text/css', href='local.css')
   body
+    h1 Examples
+    p This document will provide some examples
+    h2 Sluggify
+    p= slug('This is a Slug')
+    p This isn't: #{slug(null)}
+    h2 Loop
     - each s in $$('middle/section')
-      .section(id=$('@anchor', s))= $('@title', s)
+      .section(id=$att(s, 'anchor'))= $('@title', s)
         - each t in $$('t/text()', s)
           p= t

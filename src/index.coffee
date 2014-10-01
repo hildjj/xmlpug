@@ -44,7 +44,7 @@ fix = (r)->
       options.filename = jade
       cb null, transform(jadedata, xmldata, options)
 
-@cmd = (args) ->
+@cmd = (args, cb) ->
   program = require 'commander'
   program
     .version pkg.version
@@ -62,10 +62,12 @@ fix = (r)->
     compileDebug: program.debug
   @transformFile program.args[0], program.args[1], opts, (er, output) ->
     if er?
-      return console.error(er)
+      return cb(er)
     if program.output?
       fs.writeFile program.output, output, (er) ->
         if er?
-          console.error er
+          return cb(er)
+        cb(null, output)
     else
       console.log output
+      cb(null, output)

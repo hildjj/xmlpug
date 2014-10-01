@@ -1,4 +1,8 @@
 #!env node
 
 var xmljade = require('../lib/index');
-xmljade.cmd(process.argv);
+xmljade.cmd(process.argv, function(er) {
+  if (er) {
+    console.error(er);
+  }
+});
