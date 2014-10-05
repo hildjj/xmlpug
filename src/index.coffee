@@ -3,6 +3,7 @@ xml = require 'libxmljs'
 jade = require 'jade'
 pkg = require '../package'
 path = require 'path'
+temp = require('temp').track()
 req = require
 
 fix = (r)->
@@ -14,6 +15,7 @@ fix = (r)->
 @transform = transform = (jadedata, xmldata, options={pretty:true}) ->
   xmldoc = xml.parseXmlString xmldata
   fn = jade.compile jadedata, options
+  cache = {}
   fn
     $: (q, c=xmldoc) ->
       fix c.get(q)
@@ -22,9 +24,23 @@ fix = (r)->
     $att: (e, a) ->
       e?.attr(a)?.value()
     require: (mod) ->
-      if options.filename? and (mod.match /\./)
-        mod = path.resolve(path.dirname(options.filename), mod)
-      req mod
+      # HACK: write out a temporary file next to the jade template, and
+      # require *it*, in order to require with all of the normal rules.
+      # If require.path still worked, this wouldn't be necessary.  I'm
+      # **REALLY** open to other ideas here, since this is pretty horrifying.
+      m = cache[mod]
+      if !m?
+        dir = null
+        if options.filename?
+          dir = path.dirname(options.filename)
+        tmp = temp.openSync
+          dir: dir
+          suffix: ".js"
+        fs.write tmp.fd, "module.exports = require('#{mod}')"
+        fs.close tmp.fd
+        pth = path.resolve process.cwd(), tmp.path
+        m = cache[mod] = req pth
+      m
     version: "#{pkg.name} v#{pkg.version}"
 
 @transformFile = (jade, xml, options={pretty:true}, cb) ->
