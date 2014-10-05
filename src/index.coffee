@@ -1,8 +1,9 @@
 fs = require 'fs'
 xml = require 'libxmljs'
 jade = require 'jade'
-slg = require 'slug'
 pkg = require '../package'
+path = require 'path'
+req = require
 
 fix = (r)->
   switch r.type()
@@ -20,11 +21,10 @@ fix = (r)->
       fix(r) for r in c.find(q)
     $att: (e, a) ->
       e?.attr(a)?.value()
-    slug: (s) ->
-      if s?
-        slg(s).toLowerCase()
-      else
-        null
+    require: (mod) ->
+      if options.filename? and (mod.match /\./)
+        mod = path.resolve(path.dirname(options.filename), mod)
+      req mod
     version: "#{pkg.name} v#{pkg.version}"
 
 @transformFile = (jade, xml, options={pretty:true}, cb) ->
@@ -35,10 +35,10 @@ fix = (r)->
     cb = ->
       # no-op
 
-  fs.readFile xml, (err, xmldata) ->
+  fs.readFile jade, (err, jadedata) ->
     if err?
       return cb(err)
-    fs.readFile jade, (err, jadedata) ->
+    fs.readFile xml, (err, xmldata) ->
       if err?
         return cb(err)
       options.filename = jade

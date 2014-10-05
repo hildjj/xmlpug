@@ -11,6 +11,9 @@ module.exports = function(grunt) {
       lib: ['lib']
     },
     coffee: {
+      options: {
+        sourceMap: true
+      },
       compile: {
         expand: true,
         flatten: true,
@@ -48,6 +51,9 @@ module.exports = function(grunt) {
         stderr: true,
         command: 'node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/*.coffee'
       },
+      examples: {
+        command: './bin/xmljade examples/test.jade examples/test.xml -o examples/test.html -p'
+      }
     },
     express: {
       all: {
@@ -83,4 +89,5 @@ module.exports = function(grunt) {
   grunt.registerTask('server', ['test', 'shell:istanbul', 'express', 'watch']);
   grunt.registerTask('coverage', ['coffee', 'shell:istanbul'])
   grunt.registerTask('ci', ['coverage', 'coveralls']);
+  grunt.registerTask('examples', ['coffee', 'shell:examples']);
 };

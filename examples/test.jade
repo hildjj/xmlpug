@@ -10,9 +10,10 @@ html(lang='en')
   body
     h1 Examples
     p This document will provide some examples
-    h2 Sluggify
-    p= slug('This is a Slug')
-    p This isn't: #{slug(null)}
+    - var util = require('util')
+    p= util.format("one:%d", 2)
+    - var test = require('./test')
+    p= test.stuff()
     h2 Loop
     - each s in $$('middle/section')
       .section(id=$att(s, 'anchor'))= $('@title', s)
