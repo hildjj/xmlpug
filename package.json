@@ -25,6 +25,12 @@
     "url": "https://github.com/hildjj/xmljade/issues"
   },
   "homepage": "https://github.com/hildjj/xmljade",
+   "directories": {
+    "lib": "lib"
+  },
+  "bin": {
+    "xmljade": "./bin/xmljade"
+  },
   "devDependencies": {
     "coffee-script": "^1.8.0",
     "grunt": "^0.4.5",
