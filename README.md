@@ -1,7 +1,7 @@
 Use [Jade](https://github.com/visionmedia/jade) to transform XML, instead of
-[XSLT](http://www.w3.org/TR/xslt).  Why?  At my office, we call the XSLT book 
-the *Token of Pain*.  Whoever touched the XSLT code last has it on their desk, 
-and is responsible for being the current expert.  That person hates their 
+[XSLT](http://www.w3.org/TR/xslt).  Why?  At my office, we call the XSLT book
+the *Token of Pain*.  Whoever touched the XSLT code last has it on their desk,
+and is responsible for being the current expert.  That person hates their
 life until someone else needs the book badly enough to take on the pain.
 
 Also, you can't easily generate HTML5 with XSLT because of the doctype and tags
@@ -57,7 +57,7 @@ The added JavaScript features available in the template are:
 - `$(string, element)`: perform an XPath query against the input document, returning the first match.  Text nodes are converted to strings, and attribute nodes are converted to the string versions of their values. If no matches are found, returns `null`.  If an element is provided, search within that element, otherwise search from the root of the input document.
 - `$$(string, element)`: perform an XPath query against the input document, returning all of the matches as an array.  Text nodes are converted to strings, and attribute nodes are converted to the string versions of their values. If no matches are found, returns `[]`.  If an element is provided, search within that element, otherwise search from the root of the input document.
 - `$att(element, string)`: gets the text value of an attribute from an element with the name specified in the string.  Returns `null` on errors.
-- `slug(string)`: generate the lowercase sluggified version for the input string.  For example, "Foo Bar" gets converted to "foo-bar".  Returns `null` on errors.
+- `require(string)`: wrapper around normal node `require` allowing it to work in a template
 - `version`: the name and version number of xmljade
 
 # Command Line
