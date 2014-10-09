@@ -13,35 +13,40 @@ fix = (r)->
     else r
 
 @transform = transform = (jadedata, xmldata, options={pretty:true}) ->
-  xmldoc = xml.parseXmlString xmldata
-  fn = jade.compile jadedata, options
-  cache = {}
-  fn
-    $: (q, c=xmldoc) ->
-      fix c.get(q)
-    $$: (q, c=xmldoc) ->
-      fix(r) for r in c.find(q)
-    $att: (e, a) ->
-      e?.attr(a)?.value()
-    require: (mod) ->
-      # HACK: write out a temporary file next to the jade template, and
-      # require *it*, in order to require with all of the normal rules.
-      # If require.path still worked, this wouldn't be necessary.  I'm
-      # **REALLY** open to other ideas here, since this is pretty horrifying.
-      m = cache[mod]
-      if !m?
-        dir = null
-        if options.filename?
-          dir = path.dirname(options.filename)
-        tmp = temp.openSync
-          dir: dir
-          suffix: ".js"
-        fs.write tmp.fd, "module.exports = require('#{mod}')"
-        fs.close tmp.fd
-        pth = path.resolve process.cwd(), tmp.path
-        m = cache[mod] = req pth
-      m
-    version: "#{pkg.name} v#{pkg.version}"
+  if options.xmljadeSource
+    fn = jade.compileClient jadedata, options
+    fs.writeFileSync options.xmljadeSource, fn.toString()
+  if xmldata?
+    xmldoc = xml.parseXmlString xmldata
+    fn = jade.compile jadedata, options
+    cache = {}
+    fn
+      $: (q, c=xmldoc) ->
+        fix c.get(q)
+      $$: (q, c=xmldoc) ->
+        fix(r) for r in c.find(q)
+      $att: (e, a) ->
+        e?.attr(a)?.value()
+      require: (mod) ->
+        # HACK: write out a temporary file next to the jade template, and
+        # require *it*, in order to require with all of the normal rules.
+        # If require.path still worked, this wouldn't be necessary.  I'm
+        # **REALLY** open to other ideas here, since this is pretty horrifying.
+        m = cache[mod]
+        if !m?
+          dir = null
+          if options.filename?
+            dir = path.dirname(options.filename)
+          tmp = temp.openSync
+            dir: dir
+            suffix: ".js"
+          fs.write tmp.fd, "module.exports = require('#{mod}')"
+          fs.close tmp.fd
+          pth = path.resolve process.cwd(), tmp.path
+          m = cache[mod] = req pth
+          fs.unlinkSync pth
+        m
+      version: "#{pkg.name} v#{pkg.version}"
 
 @transformFile = (jade, xml, options={pretty:true}, cb) ->
   if typeof options == 'function'
@@ -54,28 +59,35 @@ fix = (r)->
   fs.readFile jade, (err, jadedata) ->
     if err?
       return cb(err)
-    fs.readFile xml, (err, xmldata) ->
-      if err?
-        return cb(err)
-      options.filename = jade
-      cb null, transform(jadedata, xmldata, options)
+    if xml?
+      fs.readFile xml, (err, xmldata) ->
+        if err?
+          return cb(err)
+        options.filename = jade
+        cb null, transform(jadedata, xmldata, options)
+    else
+      cb null, transform(jadedata, null, options)
 
 @cmd = (args, cb) ->
-  program = require 'commander'
+  commander = require 'commander'
+  program = new commander.Command
   program
     .version pkg.version
     .usage '[options] <template> <input>'
     .option '-d, --debug', 'Add Jade debug information'
     .option '-o, --output [file]', 'Output file'
     .option '-p, --pretty', 'Pretty print'
+    .option '-s, --source [file]', 'Output source for client transformation'
     .parse args
 
-  if program.args.length < 2
+  len = program.args.len
+  if (program.source? and (len<1)) or (len <2)
     program.help()
 
   opts =
     pretty: program.pretty
     compileDebug: program.debug
+    xmljadeSource: program.source
   @transformFile program.args[0], program.args[1], opts, (er, output) ->
     if er?
       return cb(er)
@@ -85,5 +97,6 @@ fix = (r)->
           return cb(er)
         cb(null, output)
     else
-      console.log output
+      if output?
+        console.log output
       cb(null, output)

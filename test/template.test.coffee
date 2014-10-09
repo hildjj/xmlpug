@@ -21,7 +21,9 @@ xmljade = require '../lib/index'
   test.done()
 
 @transformFile = (test) ->
-  xmljade.transformFile __dirname + '/../examples/test.jade', __dirname + '/../examples/test.xml', (er, output)->
+  jade = __dirname + '/../examples/test.jade'
+  xml =  __dirname + '/../examples/test.xml'
+  xmljade.transformFile jade, xml, (er, output)->
     test.ifError(er)
     test.done()
 
@@ -34,6 +36,17 @@ xmljade = require '../lib/index'
     '-o'
     __dirname + '/../examples/test.html'
     '-p'
+  ], (er, output)->
+    test.ifError er
+    test.done()
+
+@genSource = (test) ->
+  xmljade.cmd [
+    'node'
+    'xmljade'
+    __dirname + '/../examples/test.jade'
+    "--source"
+    __dirname + '/../examples/testSource.js'
   ], (er, output)->
     test.ifError er
     test.done()
