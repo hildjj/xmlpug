@@ -26,7 +26,17 @@ fix = (r)->
       $$: (q, c=xmldoc) ->
         fix(r) for r in c.find(q)
       $att: (e, a) ->
-        e?.attr(a)?.value()
+        if !e?
+          null
+        else if !a?
+          all = {}
+          for a in e.attrs()
+            all[a.name()] = a.value()
+          all
+        else
+          e.attr(a)?.value()
+      $root: () ->
+        xmldoc.root()
       require: (mod) ->
         # HACK: write out a temporary file next to the jade template, and
         # require *it*, in order to require with all of the normal rules.
@@ -40,11 +50,11 @@ fix = (r)->
           tmp = temp.openSync
             dir: dir
             suffix: ".js"
-          fs.write tmp.fd, "module.exports = require('#{mod}')"
-          fs.close tmp.fd
+          fs.writeSync tmp.fd, "module.exports = require('#{mod}');\n"
+          fs.closeSync tmp.fd
           pth = path.resolve process.cwd(), tmp.path
-          m = cache[mod] = req pth
-          fs.unlinkSync pth
+          m = req pth
+          cache[mod] = m
         m
       version: "#{pkg.name} v#{pkg.version}"
 
