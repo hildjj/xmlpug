@@ -28,10 +28,13 @@ fix = (r)->
       $att: (e, a) ->
         if !e?
           null
-        else if !a?
+        else if !a? or (typeof(a) == 'object')
           all = {}
-          for a in e.attrs()
-            all[a.name()] = a.value()
+          for at in e.attrs()
+            all[at.name()] = at.value()
+          if a?
+            for n,v of a
+              all[n] = v
           all
         else
           e.attr(a)?.value()
@@ -55,6 +58,8 @@ fix = (r)->
           pth = path.resolve process.cwd(), tmp.path
           m = req pth
           cache[mod] = m
+          setImmediate ->
+            fs.unlinkSync pth
         m
       version: "#{pkg.name} v#{pkg.version}"
 

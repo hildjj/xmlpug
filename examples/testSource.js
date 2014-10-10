@@ -76,5 +76,5 @@ buf.push("</div>");
   }
 }).call(this);
 
-buf.push("</body></html>");}.call(this,"$$" in locals_for_with?locals_for_with.$$:typeof $$!=="undefined"?$$:undefined,"version" in locals_for_with?locals_for_with.version:typeof version!=="undefined"?version:undefined,"$" in locals_for_with?locals_for_with.$:typeof $!=="undefined"?$:undefined,"require" in locals_for_with?locals_for_with.require:typeof require!=="undefined"?require:undefined,"$att" in locals_for_with?locals_for_with.$att:typeof $att!=="undefined"?$att:undefined));;return buf.join("");
+buf.push("<h2>all of the attributes</h2><p" + (jade.attrs(jade.merge([$att($('//author'))]), true)) + "></p><p" + (jade.attrs(jade.merge([$att($('//author'), {added: 'one'})]), true)) + "></p></body></html>");}.call(this,"$$" in locals_for_with?locals_for_with.$$:typeof $$!=="undefined"?$$:undefined,"version" in locals_for_with?locals_for_with.version:typeof version!=="undefined"?version:undefined,"$" in locals_for_with?locals_for_with.$:typeof $!=="undefined"?$:undefined,"require" in locals_for_with?locals_for_with.require:typeof require!=="undefined"?require:undefined,"$att" in locals_for_with?locals_for_with.$att:typeof $att!=="undefined"?$att:undefined));;return buf.join("");
 }

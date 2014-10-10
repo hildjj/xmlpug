@@ -19,3 +19,6 @@ html(lang='en')
       .section(id=$att(s, 'anchor'))= $('@title', s)
         - each t in $$('t/text()', s)
           p= t
+    h2 all of the attributes
+    p&attributes($att($('//author')))
+    p&attributes($att($('//author'), {added: 'one'}))
