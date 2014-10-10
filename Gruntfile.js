@@ -10,6 +10,14 @@ module.exports = function(grunt) {
       doc: ['doc'],
       lib: ['lib']
     },
+    checkDependencies: {
+      check: {
+        verbose: true
+      },
+      install: {
+        install: true
+      }
+    },
     coffee: {
       options: {
         sourceMap: true
@@ -90,4 +98,5 @@ module.exports = function(grunt) {
   grunt.registerTask('coverage', ['coffee', 'shell:istanbul'])
   grunt.registerTask('ci', ['coverage', 'coveralls']);
   grunt.registerTask('examples', ['coffee', 'shell:examples']);
+  grunt.registerTask('depend', ['checkDependencies:check']);
 };
