@@ -81,6 +81,9 @@ fix = (r)->
     if err?
       return cb(err)
     if xml?
+      if xml == '-'
+        # TODO: fix for windows
+        xml = '/dev/stdin'
       fs.readFile xml, (err, xmldata) ->
         if err?
           return cb(err)
