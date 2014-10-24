@@ -7,10 +7,13 @@ temp = require('temp').track()
 req = require
 
 fix = (r)->
-  switch r.type()
-    when 'attribute' then r.value()
-    when 'text' then r.text()
-    else r
+  if !r?
+    r
+  else
+    switch r.type()
+      when 'attribute' then r.value()
+      when 'text' then r.text()
+      else r
 
 @transform = transform = (jadedata, xmldata, options={pretty:true}) ->
   if options.xmljadeSource
@@ -21,9 +24,9 @@ fix = (r)->
     fn = jade.compile jadedata, options
     cache = {}
     fn
-      $: (q, c=xmldoc) ->
+      $: (q='.', c=xmldoc) ->
         fix c.get(q)
-      $$: (q, c=xmldoc) ->
+      $$: (q='.', c=xmldoc) ->
         fix(r) for r in c.find(q)
       $att: (e, a) ->
         if !e?
@@ -31,10 +34,13 @@ fix = (r)->
         else if !a? or (typeof(a) == 'object')
           all = {}
           for at in e.attrs()
-            all[at.name()] = at.value()
+            v = at.value()
+            if v?
+              all[at.name()] = v
           if a?
             for n,v of a
-              all[n] = v
+              if v?
+                all[n] = v
           all
         else
           e.attr(a)?.value()
