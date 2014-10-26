@@ -10,10 +10,14 @@ fix = (r)->
   if !r?
     r
   else
-    switch r.type()
-      when 'attribute' then r.value()
-      when 'text' then r.text()
-      else r
+    t = typeof r
+    if t in ['string', 'number']
+      r
+    else
+      switch r.type()
+        when 'attribute' then r.value()
+        when 'text' then r.text()
+        else r
 
 @transform = transform = (jadedata, xmldata, options={pretty:true}) ->
   if options.xmljadeSource
