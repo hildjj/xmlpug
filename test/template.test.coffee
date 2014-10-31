@@ -3,11 +3,12 @@ xmljade = require '../lib/index'
 @transform = (test) ->
   test.ok xmljade?
   out = xmljade.transform '''
-  doctype html
-  html
-    body
-      = $$('/root/text()').join('')
-      != $('em')
+doctype html
+html
+  body
+    = $$('/root/text()').join('')
+    != $('em')
+!= "<!--" + $source.toString('utf8') + "-->"
   ''', '''
   <root>testing <em>one</em> two</root>
   '''
@@ -16,7 +17,7 @@ xmljade = require '../lib/index'
 <html>
   <body>testing  two<em>one</em>
   </body>
-</html>
+</html><!--<root>testing <em>one</em> two</root>-->
 '''
   test.done()
 

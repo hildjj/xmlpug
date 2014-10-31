@@ -50,6 +50,7 @@ fix = (r)->
           e.attr(a)?.value()
       $root: () ->
         xmldoc.root()
+      $source: xmldata
       require: (mod) ->
         # HACK: write out a temporary file next to the jade template, and
         # require *it*, in order to require with all of the normal rules.
