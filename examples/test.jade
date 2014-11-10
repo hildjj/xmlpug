@@ -22,3 +22,15 @@ html(lang='en')
     h2 all of the attributes
     p&attributes($att($('//author')))
     p&attributes($att($('//author'), {added: 'one'}))
+
+    h2 namespaces
+    p= $nsDecls($('//e:extra', {e: 'urn:example:extra'}))['xmlns']
+    dl
+      for m in $$('//n:more', {n: 'urn:example:extra'})
+        dt= $att(m)['m:a']
+        dd
+          each v,n in $nsDecls(m)
+            = n
+            = " = "
+            = v
+    p= "lang: " + $att($root(), 'lang')

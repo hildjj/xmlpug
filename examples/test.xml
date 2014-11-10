@@ -24,5 +24,7 @@
       <t>This is the section for the people in Chicago.</t>
     </section>
   </middle>
+  <extra xmlns='urn:example:extra'>
+    <more xmlns:m='urn:example:m' m:a='12'/>
+  </extra>
 </rfc>
-

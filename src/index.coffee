@@ -28,10 +28,16 @@ fix = (r)->
     fn = jade.compile jadedata, options
     cache = {}
     fn
-      $: (q='.', c=xmldoc) ->
-        fix c.get(q)
-      $$: (q='.', c=xmldoc) ->
-        fix(r) for r in c.find(q)
+      $: (q='.', c=xmldoc, ns) ->
+        if c? and !ns? and (c not instanceof xml.Document) and (c not instanceof xml.Element)
+          ns = c
+          c = xmldoc
+        fix c.get(q, ns)
+      $$: (q='.', c=xmldoc, ns) ->
+        if c? and !ns? and (c not instanceof xml.Document) and (c not instanceof xml.Element)
+          ns = c
+          c = xmldoc
+        fix(r) for r in c.find(q, ns)
       $att: (e, a) ->
         if !e?
           null
@@ -40,7 +46,11 @@ fix = (r)->
           for at in e.attrs()
             v = at.value()
             if v?
-              all[at.name()] = v
+              n = at.name()
+              ns = at.namespace()
+              if ns? and ns.prefix()?
+                n = ns.prefix() + ':' + n
+              all[n] = v
           if a?
             for n,v of a
               if v?
@@ -48,6 +58,16 @@ fix = (r)->
           all
         else
           e.attr(a)?.value()
+      $nsDecls: (e) ->
+        e = e or xmldoc.root()
+        res = {}
+        for ns in e.nsDecls()
+          n = 'xmlns'
+          p = ns.prefix()
+          if p?
+            n += ':' + p
+          res[n] = ns.href()
+        res
       $root: () ->
         xmldoc.root()
       $source: xmldata
