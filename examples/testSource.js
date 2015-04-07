@@ -2,7 +2,7 @@ function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function ($$, version, $, require, $att, $nsDecls, $root) {
+;var locals_for_with = (locals || {});(function ($, $$, $att, $nsDecls, $root, require, undefined, version) {
 buf.push("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"author\"" + (jade.attr("content", $$('front/author/@fullname'), true, true)) + "><meta name=\"keywords\"" + (jade.attr("content", $$('front/keyword/text()'), true, true)) + "><meta name=\"description\"" + (jade.attr("content", $$('front/abstract/t/text()').join(' '), true, true)) + "><meta name=\"generator\"" + (jade.attr("content", version, true, true)) + "><title>" + (jade.escape(null == (jade_interp = $('front/title/text()')) ? "" : jade_interp)) + "</title></head><body><h1>Examples</h1><p>This document will provide some examples</p>");
 var util = require('util')
 buf.push("<p>" + (jade.escape(null == (jade_interp = util.format("one:%d", 2)) ? "" : jade_interp)) + "</p>");
@@ -145,5 +145,5 @@ buf.push("</dd>");
   }
 }).call(this);
 
-buf.push("</dl><p>" + (jade.escape(null == (jade_interp = "lang: " + $att($root(), 'lang')) ? "" : jade_interp)) + "</p></body></html>");}.call(this,"$$" in locals_for_with?locals_for_with.$$:typeof $$!=="undefined"?$$:undefined,"version" in locals_for_with?locals_for_with.version:typeof version!=="undefined"?version:undefined,"$" in locals_for_with?locals_for_with.$:typeof $!=="undefined"?$:undefined,"require" in locals_for_with?locals_for_with.require:typeof require!=="undefined"?require:undefined,"$att" in locals_for_with?locals_for_with.$att:typeof $att!=="undefined"?$att:undefined,"$nsDecls" in locals_for_with?locals_for_with.$nsDecls:typeof $nsDecls!=="undefined"?$nsDecls:undefined,"$root" in locals_for_with?locals_for_with.$root:typeof $root!=="undefined"?$root:undefined));;return buf.join("");
+buf.push("</dl><p>" + (jade.escape(null == (jade_interp = "lang: " + $att($root(), 'lang')) ? "" : jade_interp)) + "</p></body></html>");}.call(this,"$" in locals_for_with?locals_for_with.$:typeof $!=="undefined"?$:undefined,"$$" in locals_for_with?locals_for_with.$$:typeof $$!=="undefined"?$$:undefined,"$att" in locals_for_with?locals_for_with.$att:typeof $att!=="undefined"?$att:undefined,"$nsDecls" in locals_for_with?locals_for_with.$nsDecls:typeof $nsDecls!=="undefined"?$nsDecls:undefined,"$root" in locals_for_with?locals_for_with.$root:typeof $root!=="undefined"?$root:undefined,"require" in locals_for_with?locals_for_with.require:typeof require!=="undefined"?require:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined,"version" in locals_for_with?locals_for_with.version:typeof version!=="undefined"?version:undefined));;return buf.join("");
 }
