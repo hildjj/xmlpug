@@ -47,11 +47,13 @@
     "grunt-shell": "^1.1.1",
     "istanbul": "^0.3.2",
     "jit-grunt": "^0.9.1",
-    "nodeunit": "^0.9.0"
+    "nodeunit": "^0.9.0",
+    "source-map-support": "^0.2.10"
   },
   "dependencies": {
     "commander": "^2.3.0",
-    "jade": "^1.7.0",
+    "dentin": "^0.0.5",
+    "jade": "^1.9.2",
     "libxmljs": "git://github.com/hildjj/libxmljs.git#namespace-declarations",
     "temp": "^0.8.1"
   }

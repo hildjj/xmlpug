@@ -8,16 +8,18 @@ html
   body
     = $$('/root/text()').join('')
     != $('em')
-!= "<!--" + $source.toString('utf8') + "-->"
+  != "<!--" + $source.toString('utf8') + "-->"
   ''', '''
   <root>testing <em>one</em> two</root>
-  '''
+  ''',
+    html: true
+    pretty: true
   test.ok out?
   test.deepEqual out, '''<!DOCTYPE html>
 <html>
-  <body>testing  two<em>one</em>
-  </body>
-</html><!--<root>testing <em>one</em> two</root>-->
+  <body>testing two <em>one</em></body><!-- <root>testing <em>one</em> two</root> -->
+</html>
+
 '''
   test.done()
 
