@@ -1,5 +1,5 @@
 try
-  require('source-map-support').install();
+  require('source-map-support').install()
 catch
 
 fs = require 'fs'
@@ -10,6 +10,8 @@ pkg = require '../package'
 path = require 'path'
 temp = require('temp').track()
 req = require
+
+DEFAULT_CONFIG = "./.xmljade.json"
 
 fix = (r)->
   if !r?
@@ -37,12 +39,18 @@ fix = (r)->
   cache = {}
   out = fn
     $: (q='.', c=xmldoc, ns) ->
-      if c? and !ns? and (c not instanceof xml.Document) and (c not instanceof xml.Element)
+      if (c? and
+          !ns? and
+          (c not instanceof xml.Document) and
+          (c not instanceof xml.Element))
         ns = c
         c = xmldoc
       fix c.get(q, ns)
     $$: (q='.', c=xmldoc, ns) ->
-      if c? and !ns? and (c not instanceof xml.Document) and (c not instanceof xml.Element)
+      if (c? and
+          !ns? and
+          (c not instanceof xml.Document) and
+          (c not instanceof xml.Element))
         ns = c
         c = xmldoc
       fix(r) for r in c.find(q, ns)
@@ -102,8 +110,20 @@ fix = (r)->
       m
     version: "#{pkg.name} v#{pkg.version}"
   if pretty
+    dopts = {}
+    for k,v of options
+      console.log k
+      found = false
+      k = k.replace /^dentin-/, ->
+        found = true
+        ""
+      if found
+        dopts[k] = v
+    if not dopts.html?
+      dopts.html = options.html
+    console.log dopts
     try
-      out = dentToString out, options
+      out = dentToString out, dopts
     catch err
       process.stderr.write "Problem parsing output for pretty printing: #{err.message}"
   out
@@ -131,12 +151,33 @@ fix = (r)->
     else
       cb null, transform(jadedata, null, options)
 
+@read_config = (opts, cb) ->
+  if not opts?
+    opts = {}
+  cfg = opts.config ? DEFAULT_CONFIG
+  if not cfg?
+    return cb(null, opts)
+  fs.exists cfg, (exists) ->
+    if !exists then return cb(null, opts)
+    fs.readFile cfg, (err, data) ->
+      if err? then return cb(err)
+      try
+        config = JSON.parse data
+        for k,v of config
+          if not opts[k]?
+            opts[k] = v
+        cb(null, opts)
+      catch er
+        cb(er)
+
 @cmd = (args, cb) ->
   commander = require 'commander'
   program = new commander.Command
   program
     .version pkg.version
     .usage '[options] <template> [input]'
+    .option '-c, --config <file>', "Config file to read [#{DEFAULT_CONFIG}]",
+      DEFAULT_CONFIG
     .option '-d, --debug', 'Add Jade debug information'
     .option '-o, --output [file]', 'Output file'
     .option '-p, --pretty', 'Pretty print'
@@ -155,19 +196,24 @@ fix = (r)->
     pretty: program.pretty
     compileDebug: program.debug
     xmljadeSource: program.source
+    config: program.config
+    html: false
 
   if program.html or (program.output? and program.output.match(/\.html?$/))
     opts.html = true
 
-  @transformFile program.args[0], program.args[1], opts, (er, output) ->
+  @read_config opts, (er) =>
     if er?
-      return cb(er)
-    if program.output?
-      fs.writeFile program.output, output, (er) ->
-        if er?
-          return cb(er)
+      return process.stderr.write "#{program.config}: #{er.message}\n"
+    @transformFile program.args[0], program.args[1], opts, (er, output) ->
+      if er?
+        return cb(er)
+      if program.output?
+        fs.writeFile program.output, output, (er) ->
+          if er?
+            return cb(er)
+          cb(null, output)
+      else
+        if output?
+          console.log output
         cb(null, output)
-    else
-      if output?
-        console.log output
-      cb(null, output)

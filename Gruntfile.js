@@ -60,7 +60,7 @@ module.exports = function(grunt) {
         command: 'node_modules/.bin/istanbul cover node_modules/.bin/nodeunit test/*.coffee'
       },
       examples: {
-        command: './bin/xmljade examples/test.jade examples/test.xml -o examples/test.html -p'
+        command: './bin/xmljade examples/test.jade examples/test.xml -o examples/test.html -p -c examples/config.json'
       }
     },
     express: {
