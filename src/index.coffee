@@ -74,7 +74,7 @@ fix = (r)->
         all
       else
         e.attr(a)?.value()
-    $nsDecls: (e) ->
+    $nsDecls: (e, a) ->
       e = e or xmldoc.root()
       res = {}
       for ns in e.nsDecls()
@@ -83,6 +83,10 @@ fix = (r)->
         if p?
           n += ':' + p
         res[n] = ns.href()
+      if a?
+        for n,v of a
+          if v?
+            res[n] = v
       res
     $root: () ->
       xmldoc.root()

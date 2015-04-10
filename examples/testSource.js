@@ -16,16 +16,16 @@ buf.push("<p>" + (jade.escape(null == (jade_interp = test.stuff()) ? "" : jade_i
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var s = $$obj[$index];
 
-buf.push("<div" + (jade.attr("id", $att(s, 'anchor'), true, true)) + " class=\"section\">" + (jade.escape(null == (jade_interp = $('@title', s)) ? "" : jade_interp)));
-// iterate $$('t/text()', s)
+buf.push("<div" + (jade.attr("id", $att(s, 'anchor'), true, true)) + " class=\"section\"><h3>" + (jade.escape(null == (jade_interp = $('@title', s)) ? "" : jade_interp)) + "</h3>");
+// iterate $$('t', s)
 ;(function(){
-  var $$obj = $$('t/text()', s);
+  var $$obj = $$('t', s);
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var t = $$obj[$index];
 
-buf.push("<p>" + (jade.escape(null == (jade_interp = t) ? "" : jade_interp)) + "</p>");
+buf.push("<p>" + (jade.escape(null == (jade_interp = t.text()) ? "" : jade_interp)) + "</p>");
     }
 
   } else {
@@ -33,7 +33,29 @@ buf.push("<p>" + (jade.escape(null == (jade_interp = t) ? "" : jade_interp)) + "
     for (var $index in $$obj) {
       $$l++;      var t = $$obj[$index];
 
-buf.push("<p>" + (jade.escape(null == (jade_interp = t) ? "" : jade_interp)) + "</p>");
+buf.push("<p>" + (jade.escape(null == (jade_interp = t.text()) ? "" : jade_interp)) + "</p>");
+    }
+
+  }
+}).call(this);
+
+// iterate $$('artwork', s)
+;(function(){
+  var $$obj = $$('artwork', s);
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var a = $$obj[$index];
+
+buf.push("<pre>" + (jade.escape(null == (jade_interp = a.text()) ? "" : jade_interp)) + "</pre>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var a = $$obj[$index];
+
+buf.push("<pre>" + (jade.escape(null == (jade_interp = a.text()) ? "" : jade_interp)) + "</pre>");
     }
 
   }
@@ -47,16 +69,16 @@ buf.push("</div>");
     for (var $index in $$obj) {
       $$l++;      var s = $$obj[$index];
 
-buf.push("<div" + (jade.attr("id", $att(s, 'anchor'), true, true)) + " class=\"section\">" + (jade.escape(null == (jade_interp = $('@title', s)) ? "" : jade_interp)));
-// iterate $$('t/text()', s)
+buf.push("<div" + (jade.attr("id", $att(s, 'anchor'), true, true)) + " class=\"section\"><h3>" + (jade.escape(null == (jade_interp = $('@title', s)) ? "" : jade_interp)) + "</h3>");
+// iterate $$('t', s)
 ;(function(){
-  var $$obj = $$('t/text()', s);
+  var $$obj = $$('t', s);
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var t = $$obj[$index];
 
-buf.push("<p>" + (jade.escape(null == (jade_interp = t) ? "" : jade_interp)) + "</p>");
+buf.push("<p>" + (jade.escape(null == (jade_interp = t.text()) ? "" : jade_interp)) + "</p>");
     }
 
   } else {
@@ -64,7 +86,29 @@ buf.push("<p>" + (jade.escape(null == (jade_interp = t) ? "" : jade_interp)) + "
     for (var $index in $$obj) {
       $$l++;      var t = $$obj[$index];
 
-buf.push("<p>" + (jade.escape(null == (jade_interp = t) ? "" : jade_interp)) + "</p>");
+buf.push("<p>" + (jade.escape(null == (jade_interp = t.text()) ? "" : jade_interp)) + "</p>");
+    }
+
+  }
+}).call(this);
+
+// iterate $$('artwork', s)
+;(function(){
+  var $$obj = $$('artwork', s);
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var a = $$obj[$index];
+
+buf.push("<pre>" + (jade.escape(null == (jade_interp = a.text()) ? "" : jade_interp)) + "</pre>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var a = $$obj[$index];
+
+buf.push("<pre>" + (jade.escape(null == (jade_interp = a.text()) ? "" : jade_interp)) + "</pre>");
     }
 
   }
