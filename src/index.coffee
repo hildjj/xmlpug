@@ -112,7 +112,6 @@ fix = (r)->
   if pretty
     dopts = {}
     for k,v of options
-      console.log k
       found = false
       k = k.replace /^dentin-/, ->
         found = true
@@ -121,7 +120,6 @@ fix = (r)->
         dopts[k] = v
     if not dopts.html?
       dopts.html = options.html
-    console.log dopts
     try
       out = dentToString out, dopts
     catch err

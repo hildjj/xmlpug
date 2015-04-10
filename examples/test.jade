@@ -16,9 +16,12 @@ html(lang='en')
     p= test.stuff()
     h2 Loop
     - each s in $$('middle/section')
-      .section(id=$att(s, 'anchor'))= $('@title', s)
-        - each t in $$('t/text()', s)
-          p= t
+      .section(id=$att(s, 'anchor'))
+        h3= $('@title', s)
+        - each t in $$('t', s)
+          p= t.text()
+        - each a in $$('artwork', s)
+          pre= a.text()
     h2 all of the attributes
     p&attributes($att($('//author')))
     p&attributes($att($('//author'), {added: 'one'}))
