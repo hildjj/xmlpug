@@ -32,7 +32,7 @@
     "xmljade": "./bin/xmljade"
   },
   "devDependencies": {
-    "coffee-script": "^1.9.1",
+    "coffee-script": "^1.9.2",
     "grunt": "^0.4.5",
     "grunt-check-dependencies": "^0.9.0",
     "grunt-codo": "^0.2.0",
@@ -51,8 +51,8 @@
     "source-map-support": "^0.2.10"
   },
   "dependencies": {
-    "commander": "^2.3.0",
-    "dentin": "^0.0.9",
+    "commander": "^2.8.0",
+    "dentin": "0.0.10",
     "jade": "^1.9.2",
     "libxmljs": "git://github.com/hildjj/libxmljs.git#namespace-declarations",
     "temp": "^0.8.1"
