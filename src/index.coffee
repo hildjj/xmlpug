@@ -34,7 +34,11 @@ fix = (r)->
     fs.writeFileSync options.xmljadeSource, fn.toString()
   if not xmldata?
     return null
-  xmldoc = xml.parseXmlString xmldata
+  xopts = {}
+  if options.xinclude
+    xopts.xinclude = true
+    xopts.noxincnode = true
+  xmldoc = xml.parseXmlString xmldata, xopts
   fn ?= jade.compile jadedata, options
   cache = {}
   out = fn
@@ -88,6 +92,12 @@ fix = (r)->
           if v?
             res[n] = v
       res
+    $qname: (e) ->
+      ns = e.namespace()
+      if ns? and ns.prefix()?
+        ns.prefix() + ":" + e.name()
+      else
+        e.name()
     $root: () ->
       xmldoc.root()
     $source: xmldata
@@ -181,6 +191,7 @@ fix = (r)->
     .option '-c, --config <file>', "Config file to read [#{DEFAULT_CONFIG}]",
       DEFAULT_CONFIG
     .option '-d, --debug', 'Add Jade debug information'
+    .option '-i, --xinclude', 'Process XInclude when parsing XML'
     .option '-o, --output [file]', 'Output file'
     .option '-p, --pretty', 'Pretty print'
     .option '--html', 'HTML output; only useful for pretty printing'
@@ -199,6 +210,7 @@ fix = (r)->
     compileDebug: program.debug
     xmljadeSource: program.source
     config: program.config
+    xinclude: program.xinclude
     html: false
 
   if program.html or (program.output? and program.output.match(/\.html?$/))
