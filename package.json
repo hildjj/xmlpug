@@ -1,6 +1,6 @@
 {
   "name": "xmljade",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Transform XML documents with Jade templates",
   "main": "lib/index.js",
   "scripts": {
