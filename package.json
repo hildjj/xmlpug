@@ -44,15 +44,15 @@
     "grunt-coveralls": "^1.0.0",
     "grunt-express": "^1.4.1",
     "grunt-release": "^0.12.0",
-    "grunt-shell": "^1.1.1",
+    "grunt-shell": "^1.1.2",
     "istanbul": "^0.3.13",
     "jit-grunt": "^0.9.1",
     "nodeunit": "^0.9.1",
     "source-map-support": "^0.2.10"
   },
   "dependencies": {
-    "commander": "^2.8.0",
-    "dentin": "^0.1.5",
+    "commander": "^2.8.1",
+    "dentin": "^0.1.7",
     "jade": "^1.9.2",
     "libxmljs": "git://github.com/hildjj/libxmljs.git#all-1",
     "temp": "^0.8.1"
