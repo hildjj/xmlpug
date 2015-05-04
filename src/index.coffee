@@ -191,6 +191,7 @@ fix = (r)->
     .option '-c, --config <file>', "Config file to read [#{DEFAULT_CONFIG}]",
       DEFAULT_CONFIG
     .option '-d, --debug', 'Add Jade debug information'
+    .option '--doublequote', 'Use doublequotes instead of single'
     .option '-i, --xinclude', 'Process XInclude when parsing XML'
     .option '-o, --output [file]', 'Output file'
     .option '-p, --pretty', 'Pretty print'
@@ -212,6 +213,7 @@ fix = (r)->
     config: program.config
     xinclude: program.xinclude
     html: false
+    "dentin-doublequote": program.doublequote
 
   if program.html or (program.output? and program.output.match(/\.html?$/))
     opts.html = true

@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "commander": "^2.8.1",
-    "dentin": "^0.1.7",
+    "dentin": "*",
     "jade": "^1.9.2",
     "libxmljs": "git://github.com/hildjj/libxmljs.git#all-1",
     "temp": "^0.8.1"
