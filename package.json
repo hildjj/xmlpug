@@ -54,7 +54,7 @@
     "commander": "^2.8.1",
     "dentin": "*",
     "jade": "^1.9.2",
-    "libxmljs": "git://github.com/hildjj/libxmljs.git#all-1",
+    "libxmljs": "git://github.com/hildjj/libxmljs.git#all-2",
     "temp": "^0.8.1"
   }
 }
