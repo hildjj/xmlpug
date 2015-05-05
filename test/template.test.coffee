@@ -17,7 +17,7 @@ html
   test.ok out?
   test.deepEqual out, '''<!DOCTYPE html>
 <html>
-  <body>testing two <em>one</em></body><!-- <root>testing <em>one</em> two</root> -->
+  <body>testing two <em>one</em></body>\n  <!-- <root>testing <em>one</em> two</root> -->
 </html>
 
 '''
