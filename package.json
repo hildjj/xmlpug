@@ -32,7 +32,7 @@
     "xmljade": "./bin/xmljade"
   },
   "devDependencies": {
-    "coffee-script": "^1.9.2",
+    "coffee-script": "^1.9.3",
     "grunt": "^0.4.5",
     "grunt-check-dependencies": "^0.9.0",
     "grunt-codo": "^0.2.0",
@@ -45,16 +45,16 @@
     "grunt-express": "^1.4.1",
     "grunt-release": "^0.12.0",
     "grunt-shell": "^1.1.2",
-    "istanbul": "^0.3.13",
+    "istanbul": "^0.3.15",
     "jit-grunt": "^0.9.1",
     "nodeunit": "^0.9.1",
-    "source-map-support": "^0.2.10"
+    "source-map-support": "^0.3.1"
   },
   "dependencies": {
     "commander": "^2.8.1",
     "dentin": "*",
-    "jade": "^1.9.2",
+    "jade": "^1.10.0",
     "libxmljs": "git://github.com/hildjj/libxmljs.git#all-2",
-    "temp": "^0.8.1"
+    "temp": "^0.8.3"
   }
 }
