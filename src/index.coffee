@@ -26,22 +26,42 @@ fix = (r)->
         when 'text' then r.text()
         else r
 
-@transform = transform = (jadedata, xmldata, options={pretty:true}) ->
+@transform = transform = (jadedata, xmldata, options={pretty:true}, cb) ->
+  if !cb? or (typeof(cb) != 'function')
+    console.error 'No callback'
+    return
   pretty = options.pretty
   options.pretty = false
-  if options.xmljadeSource
-    fn = jade.compileClient jadedata, options
-    fs.writeFileSync options.xmljadeSource, fn.toString()
-  if not xmldata?
-    return null
-  xopts = {}
+  xopts =
+    noent: true
   if options.xinclude
     xopts.xinclude = true
     xopts.noxincnode = true
+
+  if options.xmljadeSource
+    try
+      ccf = jade.compileClient jadedata, options
+      fs.writeFileSync options.xmljadeSource, ccf.toString()
+      if !xmldata?
+        return cb(null, null)
+    catch e
+      return cb("Jade compile error: " + e.message)
+
   xmldoc = xml.parseXmlString xmldata, xopts
-  fn ?= jade.compile jadedata, options
+  if xmldoc?.errors.length > 0
+    er = ""
+    for e in xmldoc.errors
+      e += "ERROR (input XML #{e.line}:#{e.column}): #{e.message}\n"
+    return cb(e)
+
+  try
+    fn = jade.compile jadedata, options
+  catch e
+    return cb("Jade compile error: " + e.message)
+
   cache = {}
   out = fn
+    defs: options.define
     $: (q='.', c=xmldoc, ns) ->
       if (c? and
           !ns? and
@@ -78,6 +98,8 @@ fix = (r)->
         all
       else
         e.attr(a)?.value()
+    $element: (name, content) ->
+      new xml.Element(xmldoc, name, content)
     $nsDecls: (e, a) ->
       e = e or xmldoc.root()
       res = {}
@@ -137,7 +159,8 @@ fix = (r)->
     try
       out = dentToString out, dopts
     catch err
-      process.stderr.write "Problem parsing output for pretty printing: #{err.message}"
+      return cb("Problem parsing output for pretty printing: #{err.message}")
+  cb null, out
   out
 
 @transformFile = (jade, xml, options={pretty:true}, cb) ->
@@ -159,9 +182,9 @@ fix = (r)->
         if err?
           return cb(err)
         options.filename = jade
-        cb null, transform(jadedata, xmldata, options)
+        transform(jadedata, xmldata, options, cb)
     else
-      cb null, transform(jadedata, null, options)
+      transform(jadedata, null, options, cb)
 
 @read_config = (opts, cb) ->
   if not opts?
@@ -183,6 +206,14 @@ fix = (r)->
         cb(er)
 
 @cmd = (args, cb) ->
+  defs = {}
+  define = (v) ->
+    m = v.match /([^=]+)\s*=\s*(.*)/
+    if not m
+      console.error "Invalid definition: '#{v}'"
+    else
+      defs[m[1]] = m[2]
+
   commander = require 'commander'
   program = new commander.Command
   program
@@ -191,6 +222,7 @@ fix = (r)->
     .option '-c, --config <file>', "Config file to read [#{DEFAULT_CONFIG}]",
       DEFAULT_CONFIG
     .option '-d, --debug', 'Add Jade debug information'
+    .option '-D, --define [name=string]', 'Define a global variable', define
     .option '--doublequote', 'Use doublequotes instead of single'
     .option '-i, --xinclude', 'Process XInclude when parsing XML'
     .option '-o, --output [file]', 'Output file'
@@ -218,9 +250,17 @@ fix = (r)->
   if program.html or (program.output? and program.output.match(/\.html?$/))
     opts.html = true
 
-  @read_config opts, (er) =>
+  @read_config opts, (er, opts) =>
     if er?
-      return process.stderr.write "#{program.config}: #{er.message}\n"
+      process.stderr.write "#{program.config}: #{er.message}\n"
+      return cb(er)
+
+    if opts.define?
+      for k,v of defs
+        opts.define[k] = v
+    else
+      opts.define = defs
+
     @transformFile program.args[0], program.args[1], opts, (er, output) ->
       if er?
         return cb(er)

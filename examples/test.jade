@@ -10,6 +10,8 @@ html(lang='en')
   body
     h1 Examples
     p This document will provide some examples
+    p Running in mode:
+      span= defs.mode
     - var util = require('util')
     p= util.format("one:%d", 2)
     - var test = require('./test')

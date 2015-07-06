@@ -1,3 +1,7 @@
 {
-  "dentin-ignore": ["artwork", "pre"]
+  "dentin-ignore": ["artwork", "pre"],
+  "define": {
+    "mode": "DEFAULT",
+    "other": "new"
+  }
 }

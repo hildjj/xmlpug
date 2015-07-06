@@ -2,7 +2,7 @@ xmljade = require '../lib/index'
 
 @transform = (test) ->
   test.ok xmljade?
-  out = xmljade.transform '''
+  xmljade.transform '''
 doctype html
 html
   body
@@ -14,19 +14,23 @@ html
   ''',
     html: true
     pretty: true
-  test.ok out?
-  test.deepEqual out, '''<!DOCTYPE html>
-<html>
-  <body>testing two <em>one</em></body>\n  <!-- <root>testing <em>one</em> two</root> -->
-</html>
+  , (er, out) ->
+    test.ok out?
+    test.deepEqual out, '''<!DOCTYPE html>
+  <html>
+    <body>testing two <em>one</em></body>\n  <!-- <root>testing <em>one</em> two</root> -->
+  </html>
 
-'''
-  test.done()
+  '''
+    test.done()
 
 @transformFile = (test) ->
   jade = __dirname + '/../examples/test.jade'
   xml =  __dirname + '/../examples/test.xml'
-  xmljade.transformFile jade, xml, (er, output)->
+  xmljade.transformFile jade, xml,
+    define:
+      mode: "nodeunit transformFile"
+  , (er, output)->
     test.ifError(er)
     test.done()
 
@@ -50,6 +54,8 @@ html
     __dirname + '/../examples/test.jade'
     "--source"
     __dirname + '/../examples/testSource.js'
+    "-c"
+    __dirname + '/../examples/config.json'
   ], (er, output)->
     test.ifError er
     test.done()
