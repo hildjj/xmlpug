@@ -103,7 +103,7 @@ fix = (r)->
     $nsDecls: (e, a) ->
       e = e or xmldoc.root()
       res = {}
-      for ns in e.nsDecls()
+      for ns in e.namespaces(true)
         n = 'xmlns'
         p = ns.prefix()
         if p?
