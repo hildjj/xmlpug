@@ -6,6 +6,7 @@ html(lang='en')
     meta(name='keywords', content=$$('front/keyword/text()'))
     meta(name='description', content=$$('front/abstract/t/text()').join(' '))
     meta(name='generator', content=version)
+    link(rel='alternate' type='application/xml' href=$sourceFile)
     title= $('front/title/text()')
   body
     h1 Examples

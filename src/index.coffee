@@ -123,6 +123,7 @@ fix = (r)->
     $root: () ->
       xmldoc.root()
     $source: xmldata
+    $sourceFile: options.xml
     require: (mod) ->
       # HACK: write out a temporary file next to the jade template, and
       # require *it*, in order to require with all of the normal rules.
@@ -182,6 +183,7 @@ fix = (r)->
         if err?
           return cb(err)
         options.filename = jade
+        options.xml = xml
         transform(jadedata, xmldata, options, cb)
     else
       transform(jadedata, null, options, cb)
