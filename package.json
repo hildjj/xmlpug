@@ -32,30 +32,30 @@
     "xmljade": "./bin/xmljade"
   },
   "devDependencies": {
-    "coffee-script": "^1.9",
-    "grunt": "^0.4",
-    "grunt-check-dependencies": "^0.11",
-    "grunt-codo": "^0.2",
-    "grunt-coffeelint": "0.0.13",
-    "grunt-contrib-clean": "^0.7",
-    "grunt-contrib-coffee": "^0.13",
-    "grunt-contrib-nodeunit": "^0.4",
-    "grunt-contrib-watch": "^0.6",
-    "grunt-coveralls": "^1.0",
-    "grunt-express": "^1.4",
-    "grunt-release": "^0.13",
-    "grunt-shell": "^1.1",
-    "istanbul": "^0.4",
-    "jit-grunt": "^0.9",
-    "nodeunit": "^0.9",
-    "source-map-support": "^0.4"
+    "coffee-script": "1.10",
+    "grunt": "0.4",
+    "grunt-check-dependencies": "0.11",
+    "grunt-codo": "0.2",
+    "grunt-coffeelint": "0.0",
+    "grunt-contrib-clean": "1.0",
+    "grunt-contrib-coffee": "1.0",
+    "grunt-contrib-nodeunit": "0.4",
+    "grunt-contrib-watch": "0.6",
+    "grunt-coveralls": "1.0",
+    "grunt-express": "1.4",
+    "grunt-release": "0.13",
+    "grunt-shell": "1.1",
+    "istanbul": "0.4",
+    "jit-grunt": "0.10",
+    "nodeunit": "0.9",
+    "source-map-support": "0.4"
   },
   "dependencies": {
-    "commander": "^2.9",
+    "commander": "2.9",
     "dentin": "*",
-    "jade": "^1.11",
+    "jade": "1.11",
     "jstransformer-cdata": "1.0",
-    "libxmljs": "git://github.com/hildjj/libxmljs.git#all-5",
-    "temp": "^0.8"
+    "libxmljs": "0.17",
+    "temp": "0.8"
   }
 }
