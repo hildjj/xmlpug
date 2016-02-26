@@ -34,9 +34,6 @@ fix = (r)->
   options.pretty = false
   xopts =
     noent: true
-  if options.xinclude
-    xopts.xinclude = true
-    xopts.noxincnode = true
 
   if options.xmljadeSource
     try
@@ -226,7 +223,6 @@ fix = (r)->
     .option '-d, --debug', 'Add Jade debug information'
     .option '-D, --define [name=string]', 'Define a global variable', define
     .option '--doublequote', 'Use doublequotes instead of single'
-    .option '-i, --xinclude', 'Process XInclude when parsing XML'
     .option '-o, --output [file]', 'Output file'
     .option '-p, --pretty', 'Pretty print'
     .option '--html', 'HTML output; only useful for pretty printing'
@@ -245,7 +241,6 @@ fix = (r)->
     compileDebug: program.debug
     xmljadeSource: program.source
     config: program.config
-    xinclude: program.xinclude
     html: false
     "dentin-doublequote": program.doublequote
 
