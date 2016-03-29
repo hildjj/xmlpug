@@ -138,7 +138,7 @@ buf.push("<dt>" + (jade.escape(null == (jade_interp = $att(m)['m:a']) ? "" : jad
     for (var n = 0, $$l = $$obj.length; n < $$l; n++) {
       var v = $$obj[n];
 
-buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + " = " + (jade.escape(null == (jade_interp = v) ? "" : jade_interp)));
+buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + (jade.escape(null == (jade_interp = " = ") ? "" : jade_interp)) + (jade.escape(null == (jade_interp = v) ? "" : jade_interp)));
     }
 
   } else {
@@ -146,7 +146,7 @@ buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + " = " + (
     for (var n in $$obj) {
       $$l++;      var v = $$obj[n];
 
-buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + " = " + (jade.escape(null == (jade_interp = v) ? "" : jade_interp)));
+buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + (jade.escape(null == (jade_interp = " = ") ? "" : jade_interp)) + (jade.escape(null == (jade_interp = v) ? "" : jade_interp)));
     }
 
   }
@@ -169,7 +169,7 @@ buf.push("<dt>" + (jade.escape(null == (jade_interp = $att(m)['m:a']) ? "" : jad
     for (var n = 0, $$l = $$obj.length; n < $$l; n++) {
       var v = $$obj[n];
 
-buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + " = " + (jade.escape(null == (jade_interp = v) ? "" : jade_interp)));
+buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + (jade.escape(null == (jade_interp = " = ") ? "" : jade_interp)) + (jade.escape(null == (jade_interp = v) ? "" : jade_interp)));
     }
 
   } else {
@@ -177,7 +177,7 @@ buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + " = " + (
     for (var n in $$obj) {
       $$l++;      var v = $$obj[n];
 
-buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + " = " + (jade.escape(null == (jade_interp = v) ? "" : jade_interp)));
+buf.push((jade.escape(null == (jade_interp = n) ? "" : jade_interp)) + (jade.escape(null == (jade_interp = " = ") ? "" : jade_interp)) + (jade.escape(null == (jade_interp = v) ? "" : jade_interp)));
     }
 
   }
