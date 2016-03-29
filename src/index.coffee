@@ -44,12 +44,15 @@ fix = (r)->
     catch e
       return cb("Jade compile error: " + e.message)
 
-  xmldoc = xml.parseXmlString xmldata, xopts
-  if xmldoc?.errors.length > 0
-    er = ""
-    for e in xmldoc.errors
-      e += "ERROR (input XML #{e.line}:#{e.column}): #{e.message}\n"
-    return cb(e)
+  if xmldata instanceof xml.Document
+    xmldoc = xmldata
+  else
+    xmldoc = xml.parseXmlString xmldata, xopts
+    if xmldoc?.errors.length > 0
+      er = ""
+      for e in xmldoc.errors
+        e += "ERROR (input XML #{e.line}:#{e.column}): #{e.message}\n"
+      return cb(e)
 
   try
     fn = jade.compile jadedata, options
