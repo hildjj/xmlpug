@@ -16,7 +16,7 @@
     "release": "npm version patch && git push --follow-tags && npm publish",
     "ci": "npm run coverage  -s && cat ./coverage/lcov.info | coveralls",
     "live": "live-server --port=4001 --ignorePattern='(js|css|png)$' coverage/lcov-report",
-    "dev": "parallelshell 'npm run watch -s' 'npm run live -s'"
+    "dev": "npm-run-all -p --silent watch live"
   },
   "repository": {
     "type": "git",
@@ -49,7 +49,7 @@
     "istanbul": "latest",
     "live-server": "latest",
     "nodeunit": "latest",
-    "parallelshell": "latest",
+    "npm-run-all": "latest",
     "source-map-support": "latest",
     "watch": "latest"
   },
