@@ -8,13 +8,15 @@
     "lint": "coffeelint src test",
     "coffee": "coffee -cm -o lib/ src",
     "coverage": "istanbul cover nodeunit test/*.coffee",
-    "precoverage": "npm run coffee",
+    "precoverage": "npm run coffee -s",
     "test": "nodeunit test/*.coffee",
-    "pretest": "npm run coffee",
-    "prepublish": "npm run coffee",
+    "pretest": "npm run coffee -s",
+    "prepublish": "npm run coffee -s",
     "watch": "watch 'npm run coverage' src/",
     "release": "npm version patch && git push --follow-tags && npm publish",
-    "ci": "npm run coverage && cat ./coverage/lcov.info | coveralls"
+    "ci": "npm run coverage  -s && cat ./coverage/lcov.info | coveralls",
+    "live": "live-server --port=4001 --ignorePattern='(js|css|png)$' coverage/lcov-report",
+    "dev": "parallelshell 'npm run watch -s' 'npm run live -s'"
   },
   "repository": {
     "type": "git",
@@ -41,20 +43,22 @@
     "xmljade": "./bin/xmljade"
   },
   "devDependencies": {
-    "coffee-script": "1.10",
-    "coffeelint": "1.15",
-    "coveralls": "2.11",
-    "istanbul": "0.4",
-    "nodeunit": "0.9",
-    "source-map-support": "0.4"
+    "coffee-script": "latest",
+    "coffeelint": "latest",
+    "coveralls": "latest",
+    "istanbul": "latest",
+    "live-server": "latest",
+    "nodeunit": "latest",
+    "parallelshell": "latest",
+    "source-map-support": "latest",
+    "watch": "latest"
   },
   "dependencies": {
     "commander": "2.9",
-    "dentin": "0.1",
+    "dentin": "0.2",
     "jade": "1.11",
     "jstransformer-cdata": "1.0",
     "libxmljs": "0.17",
-    "temp": "0.8",
-    "watch": "0.17"
+    "temp": "0.8"
   }
 }
