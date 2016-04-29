@@ -4,6 +4,8 @@
   "description": "Transform XML documents with Jade templates",
   "main": "lib/index.js",
   "scripts": {
+    "clean": "rm -rf coverage lib doc man",
+    "lint": "coffeelint src test",
     "coffee": "coffee -cm -o lib/ src",
     "coverage": "istanbul cover nodeunit test/*.coffee",
     "precoverage": "npm run coffee",
@@ -40,7 +42,8 @@
   },
   "devDependencies": {
     "coffee-script": "1.10",
-    "coveralls": "^2.11.9",
+    "coffeelint": "1.15",
+    "coveralls": "2.11",
     "istanbul": "0.4",
     "nodeunit": "0.9",
     "source-map-support": "0.4"
