@@ -35,14 +35,24 @@ fix = (r)->
   xopts =
     noent: true
 
+  if typeof(jadedata) == 'funciton'
+    fn = jadedata
+  else
+    try
+      if options.xmljadeSource
+        fn = jade.compileClient jadedata, options
+      else
+        fn = jade.compile jadedata, options
+    catch e
+      return cb("Jade compile error: " + e.message)
+
   if options.xmljadeSource
     try
-      ccf = jade.compileClient jadedata, options
-      fs.writeFileSync options.xmljadeSource, ccf.toString()
+      fs.writeFileSync options.xmljadeSource, fn.toString()
       if !xmldata?
         return cb(null, null)
     catch e
-      return cb("Jade compile error: " + e.message)
+      return cb("Error writing xmljade source: " + e.message)
 
   if xmldata instanceof xml.Document
     xmldoc = xmldata
@@ -53,11 +63,6 @@ fix = (r)->
       for e in xmldoc.errors
         e += "ERROR (input XML #{e.line}:#{e.column}): #{e.message}\n"
       return cb(e)
-
-  try
-    fn = jade.compile jadedata, options
-  catch e
-    return cb("Jade compile error: " + e.message)
 
   cache = {}
   out = fn
