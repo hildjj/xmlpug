@@ -8,6 +8,9 @@ html
   body
     = $$('/root/text()').join('')
     != $('em')
+    != $('none')
+    = $('count(em)')
+    = $('em/text()')
   != "<!--" + $source.toString('utf8') + "-->"
   ''', '''
   <root>testing <em>one</em> two</root>
@@ -18,7 +21,7 @@ html
     test.ok out
     test.deepEqual out, '''<!DOCTYPE html>
 <html>
-  <body>testing two<em>one</em></body>
+  <body>testing two<em>one</em>1one</body>
   <!-- <root>testing <em>one</em> two</root> -->
 </html>
 
