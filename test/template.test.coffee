@@ -14,8 +14,8 @@ html
   ''',
     html: true
     pretty: true
-  , (er, out) ->
-    test.ok out?
+  .then (out) ->
+    test.ok out
     test.deepEqual out, '''<!DOCTYPE html>
 <html>
   <body>testing two<em>one</em></body>
@@ -31,8 +31,8 @@ html
   xmljade.transformFile jade, xml,
     define:
       mode: "nodeunit transformFile"
-  , (er, output)->
-    test.ifError(er)
+  .then (out) ->
+    test.ok out
     test.done()
 
 @cmd = (test) ->
@@ -44,8 +44,9 @@ html
     '-o'
     __dirname + '/../examples/test.html'
     '-p'
-  ], (er, output)->
-    test.ifError er
+  ]
+  .then (out) ->
+    test.ok out
     test.done()
 
 @genSource = (test) ->
@@ -57,6 +58,7 @@ html
     __dirname + '/../examples/testSource.js'
     "-c"
     __dirname + '/../examples/config.json'
-  ], (er, output)->
-    test.ifError er
+  ]
+  .then (out) ->
+    test.ok !out
     test.done()

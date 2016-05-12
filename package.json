@@ -12,7 +12,7 @@
     "test": "nodeunit test/*.coffee",
     "pretest": "npm run coffee -s",
     "prepublish": "npm run coffee -s",
-    "watch": "watch 'npm run coverage' src/",
+    "watch": "watch 'npm run coverage' src/ test/",
     "release": "npm version patch && git push --follow-tags && npm publish",
     "ci": "npm run coverage  -s && cat ./coverage/lcov.info | coveralls",
     "live": "live-server --port=4001 --ignorePattern='(js|css|png)$' coverage/lcov-report",
@@ -54,11 +54,12 @@
     "watch": "latest"
   },
   "dependencies": {
+    "bluebird": "3.3",
     "commander": "2.9",
     "dentin": "0.2",
     "jade": "1.11",
     "jstransformer-cdata": "1.0",
     "libxmljs": "hildjj/libxmljs",
-    "temp": "0.8"
+    "resolve": "1.1"
   }
 }

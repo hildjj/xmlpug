@@ -2,13 +2,15 @@ try
   require('source-map-support').install()
 catch
 
-fs = require 'fs'
+bb = require 'bluebird'
+fs = bb.promisifyAll(require 'fs')
 {dentToString} = require 'dentin'
 xml = require 'libxmljs'
 jade = require 'jade'
 pkg = require '../package'
 path = require 'path'
-temp = require('temp').track()
+resolve = require 'resolve'
+cache = require './cache'
 req = require
 
 DEFAULT_CONFIG = "./.xmljade.json"
@@ -26,193 +28,146 @@ fix = (r)->
         when 'text' then r.text()
         else r
 
-@transform = transform = (jadedata, xmldata, options={pretty:true}, cb) ->
-  if !cb? or (typeof(cb) != 'function')
-    console.error 'No callback'
-    return
+compileJade = (jadedata, options={}) ->
+  if typeof(jadedata) =='function'
+    return bb.resolve(jadedata)
+  bb.try ->
+    if options.xmljadeSource
+      fn = jade.compileClient jadedata, options
+      fs.writeFileAsync options.xmljadeSource, fn.toString()
+  .then ->
+    jade.compile jadedata, options
+
+parseXml = (xmldata) ->
+  xmldoc = xml.parseXmlString xmldata,
+    noent: true
+  if xmldoc?.errors.length > 0
+    er = "XML Error (input XML #{e.line}:#{e.column}):\n"
+    for e in xmldoc.errors
+      e += "  #{e.message}\n"
+    throw new Error(e)
+  xmldoc
+
+@transform = transform = (jadedata, xmldata, options={pretty:true}) ->
   pretty = options.pretty
   options.pretty = false
-  xopts =
-    noent: true
+  compileJade jadedata, options
+  .then (jadeFunc) ->
+    if xmldata instanceof xml.Document
+      xmldoc = xmldata
+      xmldata = xmldoc.toString()
+    else
+      xmldoc = parseXml xmldata
 
-  if typeof(jadedata) == 'funciton'
-    fn = jadedata
-  else
-    try
-      if options.xmljadeSource
-        fn = jade.compileClient jadedata, options
-      else
-        fn = jade.compile jadedata, options
-    catch e
-      return cb("Jade compile error: " + e.message)
-
-  if options.xmljadeSource
-    try
-      fs.writeFileSync options.xmljadeSource, fn.toString()
-      if !xmldata?
-        return cb(null, null)
-    catch e
-      return cb("Error writing xmljade source: " + e.message)
-
-  if xmldata instanceof xml.Document
-    xmldoc = xmldata
-  else
-    xmldoc = xml.parseXmlString xmldata, xopts
-    if xmldoc?.errors.length > 0
-      er = ""
-      for e in xmldoc.errors
-        e += "ERROR (input XML #{e.line}:#{e.column}): #{e.message}\n"
-      return cb(e)
-
-  cache = {}
-  out = fn
-    defs: options.define
-    $: (q='.', c=xmldoc, ns) ->
-      if (c? and
-          !ns? and
-          (c not instanceof xml.Document) and
-          (c not instanceof xml.Element))
-        ns = c
-        c = xmldoc
-      fix c.get(q, ns)
-    $$: (q='.', c=xmldoc, ns) ->
-      if (c? and
-          !ns? and
-          (c not instanceof xml.Document) and
-          (c not instanceof xml.Element))
-        ns = c
-        c = xmldoc
-      fix(r) for r in c.find(q, ns)
-    $att: (e, a) ->
-      if !e?
-        null
-      else if !a? or (typeof(a) == 'object')
-        all = {}
-        for at in e.attrs()
-          v = at.value()
-          if v?
-            n = at.name()
-            ns = at.namespace()
-            if ns? and ns.prefix()?
-              n = ns.prefix() + ':' + n
-            all[n] = v
+    out = jadeFunc
+      defs: options.define
+      $: (q='.', c=xmldoc, ns) ->
+        if (c? and
+            !ns? and
+            (c not instanceof xml.Document) and
+            (c not instanceof xml.Element))
+          ns = c
+          c = xmldoc
+        fix c.get(q, ns)
+      $$: (q='.', c=xmldoc, ns) ->
+        if (c? and
+            !ns? and
+            (c not instanceof xml.Document) and
+            (c not instanceof xml.Element))
+          ns = c
+          c = xmldoc
+        fix(r) for r in c.find(q, ns)
+      $att: (e, a) ->
+        if !e?
+          null
+        else if !a? or (typeof(a) == 'object')
+          all = {}
+          for at in e.attrs()
+            v = at.value()
+            if v?
+              n = at.name()
+              ns = at.namespace()
+              if ns? and ns.prefix()?
+                n = ns.prefix() + ':' + n
+              all[n] = v
+          if a?
+            for n,v of a
+              if v?
+                all[n] = v
+          all
+        else
+          e.attr(a)?.value()
+      $element: (name, content) ->
+        new xml.Element(xmldoc, name, content)
+      $nsDecls: (e, a) ->
+        e = e or xmldoc.root()
+        res = {}
+        for ns in e.namespaces(true)
+          n = 'xmlns'
+          p = ns.prefix()
+          if p?
+            n += ':' + p
+          res[n] = ns.href()
         if a?
           for n,v of a
             if v?
-              all[n] = v
-        all
-      else
-        e.attr(a)?.value()
-    $element: (name, content) ->
-      new xml.Element(xmldoc, name, content)
-    $nsDecls: (e, a) ->
-      e = e or xmldoc.root()
-      res = {}
-      for ns in e.namespaces(true)
-        n = 'xmlns'
-        p = ns.prefix()
-        if p?
-          n += ':' + p
-        res[n] = ns.href()
-      if a?
-        for n,v of a
-          if v?
-            res[n] = v
-      res
-    $qname: (e) ->
-      ns = e.namespace()
-      if ns? and ns.prefix()?
-        ns.prefix() + ":" + e.name()
-      else
-        e.name()
-    $root: () ->
-      xmldoc.root()
-    $source: xmldata
-    $sourceFile: options.xml
-    require: (mod) ->
-      # HACK: write out a temporary file next to the jade template, and
-      # require *it*, in order to require with all of the normal rules.
-      # If require.path still worked, this wouldn't be necessary.  I'm
-      # **REALLY** open to other ideas here, since this is pretty horrifying.
-      m = cache[mod]
-      if !m?
-        dir = null
-        if options.filename?
-          dir = path.dirname(options.filename)
-        tmp = temp.openSync
-          dir: dir
-          suffix: ".js"
-        fs.writeSync tmp.fd, "module.exports = require('#{mod}');\n"
-        fs.closeSync tmp.fd
-        pth = path.resolve process.cwd(), tmp.path
-        m = req pth
-        cache[mod] = m
-        setImmediate ->
-          fs.unlinkSync pth
-      m
-    version: "#{pkg.name} v#{pkg.version}"
-  if pretty
-    dopts = {}
-    for k,v of options
-      found = false
-      k = k.replace /^dentin-/, ->
-        found = true
-        ""
-      if found
-        dopts[k] = v
-    if not dopts.html?
-      dopts.html = options.html
-    try
+              res[n] = v
+        res
+      $qname: (e) ->
+        ns = e.namespace()
+        if ns? and ns.prefix()?
+          ns.prefix() + ":" + e.name()
+        else
+          e.name()
+      $root: () ->
+        xmldoc.root()
+      $source: xmldata
+      $sourceFile: options.xmlFileName
+      require: (mod) ->
+        dn = if options.jadeFileName
+          path.dirname options.jadeFileName
+        else
+          __dirname
+        fileName = resolve.sync mod,
+          basedir: dn
+        req fileName
+      version: "#{pkg.name} v#{pkg.version}"
+    if pretty
+      dopts = {}
+      for k,v of options
+        found = false
+        k = k.replace /^dentin-/, ->
+          found = true
+          ""
+        if found
+          dopts[k] = v
+      if not dopts.html?
+        dopts.html = options.html
       out = dentToString out, dopts
-    catch err
-      return cb("Problem parsing output for pretty printing: #{err.message}")
-  cb null, out
-  out
+    out
 
-@transformFile = (jade, xml, options={pretty:true}, cb) ->
-  if typeof options == 'function'
-    [cb, options] = [options, {}]
+@transformFile = transformFile = (jadeFileName, xmlFileName, options={pretty:true}) ->
+  options.jadeFileName ?= jadeFileName
+  options.xmlFileName ?= xmlFileName
+  if xml == '-'
+    # TODO: fix for windows
+    xml = '/dev/stdin'
+  cache.read jadeFileName, (jadedata) ->
+    compileJade jadedata, options
+  .then (jadeFunc) ->
+    if xmlFileName
+      cache.read xmlFileName, (xmldata) ->
+        parseXml xmldata
+      .then (xmlData) ->
+        transform jadeFunc, xmlData, options
 
-  if !cb?
-    cb = ->
-      # no-op
+@read_config = (opts={}) ->
+  fs.readFileAsync(opts.config ? DEFAULT_CONFIG)
+  .then (data) ->
+    Object.assign opts, JSON.parse(data)
+  .catchReturn opts
 
-  fs.readFile jade, (err, jadedata) ->
-    if err?
-      return cb(err)
-    if xml?
-      if xml == '-'
-        # TODO: fix for windows
-        xml = '/dev/stdin'
-      fs.readFile xml, (err, xmldata) ->
-        if err?
-          return cb(err)
-        options.filename = jade
-        options.xml = xml
-        transform(jadedata, xmldata, options, cb)
-    else
-      transform(jadedata, null, options, cb)
-
-@read_config = (opts, cb) ->
-  if not opts?
-    opts = {}
-  cfg = opts.config ? DEFAULT_CONFIG
-  if not cfg?
-    return cb(null, opts)
-  fs.exists cfg, (exists) ->
-    if !exists then return cb(null, opts)
-    fs.readFile cfg, (err, data) ->
-      if err? then return cb(err)
-      try
-        config = JSON.parse data
-        for k,v of config
-          if not opts[k]?
-            opts[k] = v
-        cb(null, opts)
-      catch er
-        cb(er)
-
-@cmd = (args, cb) ->
+@cmd = (args) ->
   defs = {}
   define = (v) ->
     m = v.match /([^=]+)\s*=\s*(.*)/
@@ -255,26 +210,18 @@ fix = (r)->
   if program.html or (program.output? and program.output.match(/\.html?$/))
     opts.html = true
 
-  @read_config opts, (er, opts) =>
-    if er?
-      process.stderr.write "#{program.config}: #{er.message}\n"
-      return cb(er)
-
+  @read_config opts
+  .then (opts) ->
     if opts.define?
-      for k,v of defs
-        opts.define[k] = v
+      opts.define = Object.assign defs, opts.define
     else
       opts.define = defs
-
-    @transformFile program.args[0], program.args[1], opts, (er, output) ->
-      if er?
-        return cb(er)
-      if program.output?
-        fs.writeFile program.output, output, (er) ->
-          if er?
-            return cb(er)
-          cb(null, output)
-      else
-        if output?
-          console.log output
-        cb(null, output)
+    transformFile program.args[0], program.args[1], opts
+  .then (output) ->
+    return if !output?
+    if program.output?
+      fs.writeFileAsync program.output, output
+      .thenReturn output
+    else
+      console.log output
+      output
