@@ -146,20 +146,27 @@ parseXml = (xmldata) ->
       out = dentToString out, dopts
     out
 
-@transformFile = transformFile = (jadeFileName, xmlFileName, options={pretty:true}) ->
+@transformFile = transformFile = (jadeFileName, xml, options={pretty:true}) ->
   options.jadeFileName ?= jadeFileName
-  options.xmlFileName ?= xmlFileName
-  if xml == '-'
-    # TODO: fix for windows
-    xml = '/dev/stdin'
-  cache.read jadeFileName, (jadedata) ->
-    compileJade jadedata, options
-  .then (jadeFunc) ->
-    if xmlFileName
-      cache.read xmlFileName, (xmldata) ->
-        parseXml xmldata
-      .then (xmlData) ->
-        transform jadeFunc, xmlData, options
+  bb.all [
+    cache.read jadeFileName, (jadedata) ->
+      compileJade jadedata, options
+    switch
+      when xml == null
+        null
+      when Buffer.isBuffer(xml)
+        options.xmlFileName ?= 'Buffer'
+        xml
+      else
+        if xml == '-'
+          # TODO: fix for windows
+          xml = '/dev/stdin'
+        options.xmlFileName = xml
+        cache.read xml
+  ]
+  .then ([jadeFunc, xmlData]) ->
+    if xmlData
+      transform jadeFunc, xmlData, options
 
 @read_config = (opts={}) ->
   fs.readFileAsync(opts.config ? DEFAULT_CONFIG)
