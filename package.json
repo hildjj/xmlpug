@@ -54,12 +54,12 @@
     "watch": "latest"
   },
   "dependencies": {
-    "bluebird": "3.3",
+    "bluebird": "3.4",
     "commander": "2.9",
     "dentin": "0.2",
     "jade": "1.11",
     "jstransformer-cdata": "1.0",
-    "libxmljs": "hildjj/libxmljs",
+    "libxmljs": "0.18",
     "resolve": "1.1"
   }
 }
