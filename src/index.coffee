@@ -148,6 +148,7 @@ parseXml = (xmldata) ->
 
 @transformFile = transformFile = (jadeFileName, xml, options={pretty:true}) ->
   options.jadeFileName ?= jadeFileName
+  options.filename = options.jadeFileName
   bb.all [
     cache.read jadeFileName, (jadedata) ->
       compileJade jadedata, options
