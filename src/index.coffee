@@ -6,14 +6,14 @@ bb = require 'bluebird'
 fs = bb.promisifyAll(require 'fs')
 {dentToString} = require 'dentin'
 xml = require 'libxmljs'
-jade = require 'jade'
+pug = require 'pug'
 pkg = require '../package'
 path = require 'path'
 resolve = require 'resolve'
 cache = require './cache'
 req = require
 
-DEFAULT_CONFIG = "./.xmljade.json"
+DEFAULT_CONFIG = "./.xmlpug.json"
 
 fix = (r)->
   if !r?
@@ -28,15 +28,15 @@ fix = (r)->
         when 'text' then r.text()
         else r
 
-compileJade = (jadedata, options={}) ->
-  if typeof(jadedata) =='function'
-    return bb.resolve(jadedata)
+compilePug = (pugdata, options={}) ->
+  if typeof(pugdata) =='function'
+    return bb.resolve(pugdata)
   bb.try ->
-    if options.xmljadeSource
-      fn = jade.compileClient jadedata, options
-      fs.writeFileAsync options.xmljadeSource, fn.toString()
+    if options.xmlpugSource
+      fn = pug.compileClient pugdata, options
+      fs.writeFileAsync options.xmlpugSource, fn.toString()
   .then ->
-    jade.compile jadedata, options
+    pug.compile pugdata, options
 
 parseXml = (xmldata) ->
   xmldoc = xml.parseXmlString xmldata,
@@ -48,18 +48,18 @@ parseXml = (xmldata) ->
     throw new Error(e)
   xmldoc
 
-@transform = transform = (jadedata, xmldata, options={pretty:true}) ->
+@transform = transform = (pugdata, xmldata, options={pretty:true}) ->
   pretty = options.pretty
   options.pretty = false
-  compileJade jadedata, options
-  .then (jadeFunc) ->
+  compilePug pugdata, options
+  .then (pugFunc) ->
     if xmldata instanceof xml.Document
       xmldoc = xmldata
       xmldata = xmldoc.toString()
     else
       xmldoc = parseXml xmldata
 
-    out = jadeFunc
+    out = pugFunc
       defs: options.define
       $: (q='.', c=xmldoc, ns) ->
         if (c? and
@@ -124,8 +124,8 @@ parseXml = (xmldata) ->
       $source: xmldata
       $sourceFile: options.xmlFileName
       require: (mod) ->
-        dn = if options.jadeFileName
-          path.dirname options.jadeFileName
+        dn = if options.pugFileName
+          path.dirname options.pugFileName
         else
           __dirname
         fileName = resolve.sync mod,
@@ -146,12 +146,12 @@ parseXml = (xmldata) ->
       out = dentToString out, dopts
     out
 
-@transformFile = transformFile = (jadeFileName, xml, options={pretty:true}) ->
-  options.jadeFileName ?= jadeFileName
-  options.filename = options.jadeFileName
+@transformFile = transformFile = (pugFileName, xml, options={pretty:true}) ->
+  options.pugFileName ?= pugFileName
+  options.filename = options.pugFileName
   bb.all [
-    cache.read jadeFileName, (jadedata) ->
-      compileJade jadedata, options
+    cache.read pugFileName, (pugdata) ->
+      compilePug pugdata, options
     switch
       when xml == null
         null
@@ -165,9 +165,9 @@ parseXml = (xmldata) ->
         options.xmlFileName = xml
         cache.read xml
   ]
-  .then ([jadeFunc, xmlData]) ->
+  .then ([pugFunc, xmlData]) ->
     if xmlData
-      transform jadeFunc, xmlData, options
+      transform pugFunc, xmlData, options
 
 @read_config = (opts={}) ->
   fs.readFileAsync(opts.config ? DEFAULT_CONFIG)
@@ -191,7 +191,7 @@ parseXml = (xmldata) ->
     .usage '[options] <template> [input]'
     .option '-c, --config <file>', "Config file to read [#{DEFAULT_CONFIG}]",
       DEFAULT_CONFIG
-    .option '-d, --debug', 'Add Jade debug information'
+    .option '-d, --debug', 'Add Pug debug information'
     .option '-D, --define [name=string]', 'Define a global variable', define
     .option '--doublequote', 'Use doublequotes instead of single'
     .option '-o, --output [file]', 'Output file'
@@ -210,7 +210,7 @@ parseXml = (xmldata) ->
   opts =
     pretty: program.pretty
     compileDebug: program.debug
-    xmljadeSource: program.source
+    xmlpugSource: program.source
     config: program.config
     html: false
     "dentin-doublequote": program.doublequote

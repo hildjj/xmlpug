@@ -1,7 +1,7 @@
 {
-  "name": "xmljade",
+  "name": "xmlpug",
   "version": "1.0.2",
-  "description": "Transform XML documents with Jade templates",
+  "description": "Transform XML documents with Pug templates",
   "main": "./lib/index.js",
   "scripts": {
     "clean": "rm -rf coverage lib doc man",
@@ -20,11 +20,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hildjj/xmljade"
+    "url": "https://github.com/hildjj/xmlpug"
   },
   "keywords": [
     "xml",
     "jade",
+    "pug",
     "xsl",
     "xslt",
     "transform",
@@ -33,14 +34,14 @@
   "author": "Joe Hildebrand",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hildjj/xmljade/issues"
+    "url": "https://github.com/hildjj/xmlpug/issues"
   },
-  "homepage": "https://github.com/hildjj/xmljade",
+  "homepage": "https://github.com/hildjj/xmlpug",
   "directories": {
     "lib": "lib"
   },
   "bin": {
-    "xmljade": "./bin/xmljade"
+    "xmlpug": "./bin/xmlpug"
   },
   "devDependencies": {
     "coffee-script": "latest",
@@ -57,9 +58,9 @@
     "bluebird": "3.4",
     "commander": "2.9",
     "dentin": "0.2",
-    "jade": "1.11",
     "jstransformer-cdata": "1.0",
     "libxmljs": "0.18",
+    "pug": "^2.0.0-beta6",
     "resolve": "1.1"
   }
 }

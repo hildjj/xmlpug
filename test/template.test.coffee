@@ -1,9 +1,9 @@
-xmljade = require '../lib/index'
+xmlpug = require '../lib/index'
 path = require 'path'
 
 @transform = (test) ->
-  test.ok xmljade?
-  xmljade.transform '''
+  test.ok xmlpug?
+  xmlpug.transform '''
 doctype html
 html
   body
@@ -30,9 +30,9 @@ html
     test.done()
 
 @transformFile = (test) ->
-  jade = path.join __dirname, '..', 'examples', 'test.jade'
+  pug = path.join __dirname, '..', 'examples', 'test.pug'
   xml =  path.join __dirname, '..', 'examples', 'test.xml'
-  xmljade.transformFile jade, xml,
+  xmlpug.transformFile pug, xml,
     define:
       mode: "nodeunit transformFile"
   .then (out) ->
@@ -40,10 +40,10 @@ html
     test.done()
 
 @cmd = (test) ->
-  xmljade.cmd [
+  xmlpug.cmd [
     'node'
-    'xmljade'
-    path.join __dirname, '..', 'examples', 'test.jade'
+    'xmlpug'
+    path.join __dirname, '..', 'examples', 'test.pug'
     path.join __dirname, '..', 'examples', 'test.xml'
     '-o'
     path.join __dirname, '..', 'examples', 'test.html'
@@ -54,10 +54,10 @@ html
     test.done()
 
 @genSource = (test) ->
-  xmljade.cmd [
+  xmlpug.cmd [
     'node'
-    'xmljade'
-    path.join __dirname, '..', 'examples', 'test.jade'
+    'xmlpug'
+    path.join __dirname, '..', 'examples', 'test.pug'
     "--source"
     path.join __dirname, '..', 'examples', 'testSource.js'
     "-c"
@@ -69,8 +69,8 @@ html
 
 @xformBuffer = (test) ->
   buf = new Buffer '<foo>boo</foo>'
-  jade = path.join __dirname, 'bar.jade'
-  xmljade.transformFile jade, buf
+  pug = path.join __dirname, 'bar.pug'
+  xmlpug.transformFile pug, buf
   .then (out) ->
     test.ok out
     test.done()
