@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var xmljade = require('../lib/index');
-xmljade.cmd(process.argv)
+var xmlpug = require('../lib/index');
+xmlpug.cmd(process.argv)
 .catch(function(er) {
   console.error(er);
   process.exit(1);

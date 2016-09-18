@@ -1,4 +1,4 @@
-Use [Jade](https://github.com/visionmedia/jade) to transform XML, instead of
+Use [Pug](https://pugjs.org) to transform XML, instead of
 [XSLT](http://www.w3.org/TR/xslt).  Why?  At my office, we call the XSLT book
 the *Token of Pain*.  Whoever touched the XSLT code last has it on their desk,
 and is responsible for being the current expert.  That person hates their
@@ -9,7 +9,7 @@ like `<meta>` that don't get closed.
 
 # Installation
 
-    npm install -g xmljade
+    npm install -g xmlpug
 
 # Example
 
@@ -50,7 +50,7 @@ the above template would generate:
 </html>
 ```
 
-# Jade Extensions
+# Pug Extensions
 
 The added JavaScript features available in the template are:
 
@@ -59,17 +59,17 @@ The added JavaScript features available in the template are:
 - `$att(element, string)`: gets the text value of an attribute from an element with the name specified in the string.  Returns `null` on errors.
 - `$source`: a Buffer containing the original XML source before parsing
 - `require(string)`: wrapper around normal node `require` allowing it to work in a template
-- `version`: the name and version number of xmljade
+- `version`: the name and version number of xmlpug
 
 # Command Line
 
 
-    Usage: xmljade [options] <template> <input>
+    Usage: xmlpug [options] <template> <input>
 
     Options:
 
       -h, --help           output usage information
       -V, --version        output the version number
-      -d, --debug          Add Jade debug information
+      -d, --debug          Add Pug debug information
       -o, --output [file]  Output file
       -p, --pretty         Pretty print
