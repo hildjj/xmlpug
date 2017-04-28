@@ -1,11 +1,12 @@
 language: node_js
 node_js:
-- '0.10'
+- '4'
+- '6'
+- '7'
 install:
-- npm install -g grunt grunt-cli
 - npm install
 script:
-- npm run-script ci
+- npm run-script coveralls
 env:
   global:
     secure: lCRGuQxhmDWGO+AKg4io7orgvTX2hlnVTH4hZj8nZJI+9KeZo3u5E8b3BBKCWZaIp6WSAnmb0GAc4H7Y8oPvVPvsZDAIvEOlTIgtkmYXDUKIvEsyFDtz69cjXD7TQ3x0XpnB1kbrJClsBA/2VTd3yEe5BskFqpzX5o7trKCT/sg=
