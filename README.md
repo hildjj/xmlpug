@@ -73,3 +73,7 @@ The added JavaScript features available in the template are:
       -d, --debug          Add Pug debug information
       -o, --output [file]  Output file
       -p, --pretty         Pretty print
+
+# APIs
+
+Docs coming soon.
