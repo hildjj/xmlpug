@@ -77,3 +77,6 @@ The added JavaScript features available in the template are:
 # APIs
 
 Docs coming soon.
+
+[![Coverage Status](https://coveralls.io/repos/github/hildjj/xmlpug/badge.svg?branch=master)](https://coveralls.io/github/hildjj/xmlpug?branch=master)
+[![Build Status](https://travis-ci.org/hildjj/xmlpug.svg?branch=master)](https://travis-ci.org/hildjj/xmlpug)
