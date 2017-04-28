@@ -4,7 +4,7 @@
   "description": "Transform XML documents with Pug templates",
   "main": "./lib/index.js",
   "scripts": {
-    "clean": "rm -rf coverage doc man",
+    "clean": "rm -rf coverage doc man .nyc_output",
     "lint": "eslint lib test",
     "coverage": "nyc npm test",
     "coveragehtml": "nyc report -r html",
@@ -59,5 +59,11 @@
     "libxmljs": "0.18",
     "pug": "^2.0.0-beta12",
     "resolve": "1.3"
+  },
+  "nyc": {
+    "exclude": [
+      "examples",
+      "test"
+    ]
   }
 }
