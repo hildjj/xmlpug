@@ -5,9 +5,14 @@ node_js:
 - '6'
 - '7'
 install:
-- yarn install
+- npm install
 script:
 - npm run-script coveralls
 env:
-  global:
-    secure: lCRGuQxhmDWGO+AKg4io7orgvTX2hlnVTH4hZj8nZJI+9KeZo3u5E8b3BBKCWZaIp6WSAnmb0GAc4H7Y8oPvVPvsZDAIvEOlTIgtkmYXDUKIvEsyFDtz69cjXD7TQ3x0XpnB1kbrJClsBA/2VTd3yEe5BskFqpzX5o7trKCT/sg=
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
