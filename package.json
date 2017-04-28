@@ -56,7 +56,7 @@
     "commander": "2.9",
     "dentin": "0.2",
     "jstransformer-cdata": "1.0",
-    "libxmljs": "0.18",
+    "libxmljs": "0.18.9",
     "pug": "^2.0.0-beta12",
     "resolve": "1.3"
   }
