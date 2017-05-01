@@ -9,7 +9,10 @@ const cmd = require('../lib/cmd');
 const XMLPUG = path.join(__dirname, '..', 'bin', 'xmlpug');
 const PUG = path.join(__dirname, '..', 'examples', 'test.pug');
 
-function exec(file, stdin, ...args) {
+function exec() {
+  var args = Array.prototype.slice.call(arguments);
+  const file = args.shift();
+  const stdin = args.shift();
   return bb.fromCallback((cb) => {
     const child = execFile(file, args, cb);
     if (stdin) {
