@@ -1,6 +1,6 @@
 {
   "name": "xmlpug",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Transform XML documents with Pug templates",
   "main": "./lib/index.js",
   "scripts": {
