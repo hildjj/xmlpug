@@ -21,6 +21,7 @@ function exec(file, stdin, ...args) {
 exports.commands = function(test) {
   const out = path.join(__dirname, '..', 'examples', 'test.html');
   return fs.unlinkAsync(out)
+  .catch(() => void 0)
   .finally(() => cmd([
     process.execPath,
     'xmlpug',
