@@ -1,3 +1,5 @@
+'use strict';
+
 exports.stuff = function() {
-  return "Things.  And Stuff";
+  return 'Things.  And Stuff';
 }

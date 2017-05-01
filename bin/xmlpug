@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+'use strict';
 
-var xmlpug = require('../lib/index');
-xmlpug.cmd(process.argv)
+const cmd = require('../lib/cmd');
+cmd(process.argv)
 .catch(function(er) {
   console.error(er);
   process.exit(1);

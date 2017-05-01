@@ -7,3 +7,4 @@ TAGS
 npm-debug.log
 examples/*.html
 .nyc_output
+yarn.lock
