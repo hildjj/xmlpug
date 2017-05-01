@@ -22,7 +22,7 @@ exports.corners = function(test) {
   test.equals(s.$$().length, 1);
   test.equals(s.$att(), null);
   test.equals(s.$element('foo', 'bar').toString(), '<foo>bar</foo>');
-  const baz = s.$('u:baz', {u:'urn:baz'})
+  const baz = s.$('u:baz', {u:'urn:baz'});
   test.ok(baz);
   test.ok(!s.$att(baz, 'xmlns'));
   test.deepEqual(s.$att(baz, {b: 'nope', c:null}), {

@@ -7,7 +7,7 @@ const path = require('path');
 const cmd = require('../lib/cmd');
 
 const XMLPUG = path.join(__dirname, '..', 'bin', 'xmlpug');
-const PUG = path.join(__dirname, '..', 'examples', 'test.pug')
+const PUG = path.join(__dirname, '..', 'examples', 'test.pug');
 
 function exec(file, stdin, ...args) {
   return bb.fromCallback((cb) => {

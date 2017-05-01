@@ -43,7 +43,6 @@ foot
   test.done();
 };
 
-
 exports.transformFile = function(test) {
   const pug = path.join(__dirname, '..', 'examples', 'test.pug');
   const xml = path.join(__dirname, '..', 'examples', 'test.xml');
