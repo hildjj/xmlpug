@@ -1,5 +1,3 @@
-'use strict';
+'use strict'
 
-exports.stuff = function() {
-  return 'Things.  And Stuff';
-}
+exports.stuff = () => 'Things.  And Stuff'

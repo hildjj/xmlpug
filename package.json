@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "clean": "rm -rf coverage doc man .nyc_output",
-    "lint": "eslint lib test",
+    "lint": "eslint . --ext js",
     "coverage": "nyc npm test",
     "coveragehtml": "nyc report -r html",
     "precoveragehtml": "npm run coverage",
@@ -43,9 +43,12 @@
     "xmlpug": "./bin/xmlpug"
   },
   "devDependencies": {
+    "@cto.af/eslint-config": "^0.0.8",
     "ava": "^4.0.0-alpha.2",
     "coveralls": "latest",
-    "eslint": "latest",
+    "eslint": "^7.32.0",
+    "eslint-plugin-jsdoc": "^36.0.8",
+    "eslint-plugin-node": "^11.1.0",
     "live-server": "latest",
     "nodeunit": "latest",
     "npm-run-all": "latest",

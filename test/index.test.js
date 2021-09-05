@@ -1,11 +1,12 @@
-'use strict';
+'use strict'
 
-const xml = require('libxmljs2');
-const xmlpug = require('../lib/index');
-const path = require('path');
+const xml = require('libxmljs2')
+const xmlpug = require('../lib/index')
+const path = require('path')
+const {Buffer} = require('buffer')
 
-exports.transform = function(test) {
-  test.ok(xmlpug != null);
+exports.transform = test => {
+  test.ok(xmlpug != null)
   const out = xmlpug.transform(`
 doctype html
 html
@@ -16,80 +17,78 @@ html
     = $('count(em)')
     = $('em/text()')
   != "<!--" + $source.toString('utf8') + "-->"`,
-    '<root>testing <em>one</em> two</root>');
-  test.ok(out);
-  test.deepEqual(out,
-`<!DOCTYPE html>
+  '<root>testing <em>one</em> two</root>')
+  test.ok(out)
+
+  test.deepEqual(out, `\
+<!DOCTYPE html>
 <html>
   <body>testing two<em>one</em>1one</body>
   <!-- <root>testing <em>one</em> two</root> -->
 </html>
-`);
-  test.done();
-};
+`)
+  test.done()
+}
 
-exports.xml = function(test) {
-  test.ok(xmlpug != null);
+exports.xml = test => {
+  test.ok(xmlpug != null)
   const out = xmlpug.transform(`
 foot
   = $('em/text()')
 `,
-    xml.parseXml('<root>testing <em>one</em> two</root>'));
-  test.ok(out);
-  test.deepEqual(out,
-`<?xml version='1.0'?>
+  xml.parseXml('<root>testing <em>one</em> two</root>'))
+  test.ok(out)
+
+  test.deepEqual(out, `\
+<?xml version='1.0'?>
 <foot>one</foot>
-`);
-  test.done();
-};
+`)
+  test.done()
+}
 
-exports.transformFile = function(test) {
-  const pug = path.join(__dirname, '..', 'examples', 'test.pug');
-  const xml = path.join(__dirname, '..', 'examples', 'test.xml');
-  return xmlpug.transformFile(pug, xml, {
+exports.transformFile = async test => {
+  const pug = path.join(__dirname, '..', 'examples', 'test.pug')
+  const xmlOut = path.join(__dirname, '..', 'examples', 'test.xml')
+  const out = await xmlpug.transformFile(pug, xmlOut, {
     define: {
-      mode: 'nodeunit transformFile'
-    }
-  }).then(function(out) {
-    test.ok(out);
-    return test.done();
-  });
-};
+      mode: 'nodeunit transformFile',
+    },
+  })
+  test.ok(out)
+  test.done()
+}
 
-exports.xformBuffer = function(test) {
-  const buf = Buffer.from('<foo>boo</foo>');
-  const pug = path.join(__dirname, 'bar.pug');
-  return xmlpug.transformFile(pug, buf).then(function(out) {
-    test.ok(out);
-    return test.done();
-  });
-};
+exports.xformBuffer = async test => {
+  const buf = Buffer.from('<foo>boo</foo>')
+  const pug = path.join(__dirname, 'bar.pug')
+  const out = await xmlpug.transformFile(pug, buf)
+  test.ok(out)
+  test.done()
+}
 
-exports.xformDoc = (test) => {
-  const doc = xml.parseXml('<foo>boo</foo>');
-  const pug = path.join(__dirname, 'bar.pug');
-  return xmlpug.transformFile(pug, doc).then(function(out) {
-    test.ok(out);
-    return test.done();
-  });
-};
+exports.xformDoc = async test => {
+  const doc = xml.parseXml('<foo>boo</foo>')
+  const pug = path.join(__dirname, 'bar.pug')
+  const out = await xmlpug.transformFile(pug, doc)
+  test.ok(out)
+  test.done()
+}
 
-exports.edges = (test) => {
-  const doc = xml.parseXml('<foo>boo</foo>');
-  const pug = path.join(__dirname, 'bar.pug');
-  test.throws(() => xmlpug.transformFile(pug, 0));
-  return xmlpug.transformFile(pug, doc, {
+exports.edges = async test => {
+  const doc = xml.parseXml('<foo>boo</foo>')
+  const pug = path.join(__dirname, 'bar.pug')
+  test.throws(() => xmlpug.transformFile(pug, 0))
+  let out = await xmlpug.transformFile(pug, doc, {
     pugFileName: 'none',
-    xmlFilename: 'none'
+    xmlFilename: 'none',
   })
-  .then((out) => {
-    test.ok(out);
-    return xmlpug.transformFile(pug, Buffer.from('<foo>boo</foo>'), {
-      pugFileName: 'none',
-      xmlFilename: 'none'
-    });
+  test.ok(out)
+
+  out = await xmlpug.transformFile(pug, Buffer.from('<foo>boo</foo>'), {
+    pugFileName: 'none',
+    xmlFilename: 'none',
   })
-  .then((out) => test.ok(out))
-  .then(() => test.done());
-};
+  test.ok(out)
+  test.done()
+}
 

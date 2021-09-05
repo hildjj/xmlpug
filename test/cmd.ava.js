@@ -1,13 +1,11 @@
-'use strict';
+'use strict'
 
 const test = require('ava')
-const {execFile} = require('child_process')
 const fs = require('fs/promises')
 const path = require('path')
 const XmlPugCommand = require('../lib/cmd')
 const {Transform} = require('stream')
 
-const XMLPUG = path.join(__dirname, '..', 'bin', 'xmlpug')
 const PUG = path.join(__dirname, '..', 'examples', 'test.pug')
 const PROLOG = [
   process.execPath,
@@ -16,33 +14,35 @@ const PROLOG = [
 
 class Buf extends Transform {
   constructor(opts = {}) {
-    const { errorToThrow, ...others } = opts;
+    const { errorToThrow, ...others } = opts
     super({
       ...others,
-      encoding: "utf8",
-    });
-    this.errorToThrow = errorToThrow;
+      encoding: 'utf8',
+    })
+    this.errorToThrow = errorToThrow
   }
 
   _transform(chunk, encoding, cb) {
     if (this.errorToThrow) {
-      cb(this.errorToThrow);
+      cb(this.errorToThrow)
     } else {
-      this.push(chunk);
-      cb();
+      this.push(chunk)
+      cb()
     }
   }
 
   static from(str) {
-    return new Buf().end(str);
+    return new Buf().end(str)
   }
 }
 
 test('run', async t => {
-  const out = path.join(__dirname, '..', 'examples', 'test.html');
+  const out = path.join(__dirname, '..', 'examples', 'test.html')
   try {
     await fs.unlink(out)
-  } catch (ignored) {}
+  } catch (ignored) {
+    // File didn't already exist, probably because a test failed earlier
+  }
   const cli = new XmlPugCommand()
   cli.exitOverride()
   await cli.main([
@@ -51,10 +51,10 @@ test('run', async t => {
     path.join(__dirname, '..', 'examples', 'test.xml'),
     '-o',
     out,
-    '-p'
+    '-p',
   ])
 
-  const outdata = await fs.readFile(out, 'utf8');
+  const outdata = await fs.readFile(out, 'utf8')
   t.regex(outdata, /<html/)
 })
 
@@ -64,10 +64,10 @@ test('help', async t => {
   cli.defaultOut = new Buf()
   await t.throwsAsync(() => cli.main([
     ...PROLOG,
-    '-h'
+    '-h',
   ]), {
-    code: 'commander.helpDisplayed'
-  });
+    code: 'commander.helpDisplayed',
+  })
   t.is(cli.defaultOut.read(), `\
 Usage: xmlpug [options] <template> [input...]
 
