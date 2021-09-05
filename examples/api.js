@@ -21,7 +21,7 @@ xmlpug.readConfig(defaultOptions)
 .then((res) => {
   assert.equal(typeof res, 'string');
   return xmlpug.transformFile('test.pug',
-                              new Buffer('<foo/>'),
+                              Buffer.from('<foo/>'),
                               this.opts);
 })
 .then((res) => {
@@ -29,7 +29,7 @@ xmlpug.readConfig(defaultOptions)
   return xmlpug.transform(`
 foo
   = $('/bar/text()')
-`, new Buffer('<bar>test</bar>'), this.opts);
+`, Buffer.from('<bar>test</bar>'), this.opts);
 })
 .then((res) => {
   assert.equal(res, '<foo>test</foo>')

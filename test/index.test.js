@@ -1,6 +1,6 @@
 'use strict';
 
-const xml = require('libxmljs');
+const xml = require('libxmljs2');
 const xmlpug = require('../lib/index');
 const path = require('path');
 
@@ -57,7 +57,7 @@ exports.transformFile = function(test) {
 };
 
 exports.xformBuffer = function(test) {
-  const buf = new Buffer('<foo>boo</foo>');
+  const buf = Buffer.from('<foo>boo</foo>');
   const pug = path.join(__dirname, 'bar.pug');
   return xmlpug.transformFile(pug, buf).then(function(out) {
     test.ok(out);
@@ -84,7 +84,7 @@ exports.edges = (test) => {
   })
   .then((out) => {
     test.ok(out);
-    return xmlpug.transformFile(pug, new Buffer('<foo>boo</foo>'), {
+    return xmlpug.transformFile(pug, Buffer.from('<foo>boo</foo>'), {
       pugFileName: 'none',
       xmlFilename: 'none'
     });

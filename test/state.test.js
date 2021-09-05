@@ -1,6 +1,6 @@
 'use strict';
 
-const xml = require('libxmljs');
+const xml = require('libxmljs2');
 const State = require('../lib/state');
 
 exports.corners = function(test) {
