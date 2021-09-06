@@ -1,36 +1,37 @@
 // Example of how to call the API
 
-'use strict';
+'use strict'
 
-const xmlpug = require('../');
-const libxmljs = require('libxmljs');
-const assert = require('assert');
+// TODO: rewrite with new API when done
 
-const defaultOptions = {
-  config: 'config.json',
-  pretty: true,
-  html: true
-};
+// const xmlpug = require('../')
+// const assert = require('assert')
 
-xmlpug.readConfig(defaultOptions)
-.bind({})
-.then((opts) => {
-  this.opts = opts;
-  return xmlpug.transformFile('test.pug', 'test.xml', opts);
-})
-.then((res) => {
-  assert.equal(typeof res, 'string');
-  return xmlpug.transformFile('test.pug',
-                              new Buffer('<foo/>'),
-                              this.opts);
-})
-.then((res) => {
-  assert.equal(typeof res, 'string');
-  return xmlpug.transform(`
-foo
-  = $('/bar/text()')
-`, new Buffer('<bar>test</bar>'), this.opts);
-})
-.then((res) => {
-  assert.equal(res, '<foo>test</foo>')
-});
+// const defaultOptions = {
+//   config: 'config.json',
+//   pretty: true,
+//   html: true,
+// }
+
+// xmlpug.readConfig(defaultOptions)
+//   .bind({})
+//   .then(opts => {
+//     this.opts = opts
+//     return xmlpug.transformFile('test.pug', 'test.xml', opts)
+//   })
+//   .then((res) => {
+//     assert.equal(typeof res, 'string')
+//     return xmlpug.transformFile('test.pug',
+//                                 Buffer.from('<foo/>'),
+//                                 this.opts)
+//   })
+//   .then((res) => {
+//     assert.equal(typeof res, 'string')
+//     return xmlpug.transform(`
+//   foo
+//     = $('/bar/text()')
+//   `, Buffer.from('<bar>test</bar>'), this.opts)
+//   })
+//   .then((res) => {
+//     assert.equal(res, '<foo>test</foo>')
+//   })
