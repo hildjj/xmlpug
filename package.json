@@ -4,18 +4,11 @@
   "description": "Transform XML documents with Pug templates",
   "main": "./lib/index.js",
   "scripts": {
-    "clean": "rm -rf coverage doc man .nyc_output",
+    "clean": "rimraf coverage .nyc_output",
     "lint": "eslint . --ext js",
-    "coverage": "nyc npm test",
-    "coveragehtml": "nyc report -r html",
-    "precoveragehtml": "npm run coverage",
+    "coverage": "nyc -r lcov npm test",
     "test": "ava test/*.ava.js",
-    "watch": "watch 'npm run coveragehtml' lib/ test/",
-    "release": "npm version patch && git push --follow-tags && npm publish",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "precoveralls": "npm run coverage",
-    "live": "live-server --port=4001 --ignorePattern='(js|css|png)$' coverage",
-    "dev": "npm-run-all -p --silent watch live"
+    "release": "npm version patch && git push --follow-tags && npm publish"
   },
   "repository": {
     "type": "git",
@@ -48,7 +41,8 @@
     "eslint": "^7.32.0",
     "eslint-plugin-jsdoc": "^36.0.8",
     "eslint-plugin-node": "^11.1.0",
-    "nyc": "latest"
+    "nyc": "latest",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "commander": "8.1",

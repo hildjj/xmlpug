@@ -1,8 +1,11 @@
 .DS_Store
+.editorconfig
+.eslintrc.js
 .nyc_output
 .vscode/
 coverage
-examples/*.html
+examples/
 node_modules
 npm-debug.log
 TAGS
+test/
