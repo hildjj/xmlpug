@@ -9,7 +9,7 @@
     "coverage": "nyc npm test",
     "coveragehtml": "nyc report -r html",
     "precoveragehtml": "npm run coverage",
-    "test": "nodeunit test/*.test.js && ava test/*.ava.js",
+    "test": "ava test/*.ava.js",
     "watch": "watch 'npm run coveragehtml' lib/ test/",
     "release": "npm version patch && git push --follow-tags && npm publish",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
@@ -44,22 +44,15 @@
   },
   "devDependencies": {
     "@cto.af/eslint-config": "^0.0.8",
-    "ava": "^4.0.0-alpha.2",
-    "coveralls": "latest",
+    "ava": "^3.15.0",
     "eslint": "^7.32.0",
     "eslint-plugin-jsdoc": "^36.0.8",
     "eslint-plugin-node": "^11.1.0",
-    "live-server": "latest",
-    "nodeunit": "latest",
-    "npm-run-all": "latest",
-    "nyc": "latest",
-    "watch": "latest"
+    "nyc": "latest"
   },
   "dependencies": {
-    "bluebird": "3.7",
     "commander": "8.1",
     "dentin": "3.0",
-    "jstransformer-cdata": "1.0",
     "libxmljs2": "^0.28.0",
     "pug": "3.0.2",
     "resolve": "1.20"
