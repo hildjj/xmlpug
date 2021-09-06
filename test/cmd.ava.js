@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('ava')
-const fs = require('fs/promises')
+const fs = require('fs').promises
 const path = require('path')
 const XmlPugCommand = require('../lib/cmd')
 const {Transform} = require('stream')
