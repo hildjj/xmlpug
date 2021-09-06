@@ -2,6 +2,8 @@
   "dentin-ignore": ["artwork", "pre"],
   "define": {
     "mode": "DEFAULT",
-    "other": "new"
-  }
+    "other": "new",
+    "test": null
+  },
+  "inputs": []
 }

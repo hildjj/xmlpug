@@ -79,3 +79,4 @@ The added JavaScript features available in the template are:
 Docs coming soon.
 
 [![Tests](https://github.com/hildjj/xmlpug/actions/workflows/node.js.yml/badge.svg)](https://github.com/hildjj/xmlpug/actions/workflows/node.js.yml)
+[![codecov](https://codecov.io/gh/hildjj/xmlpug/branch/main/graph/badge.svg?token=FkJe6b3bIS)](https://codecov.io/gh/hildjj/xmlpug)

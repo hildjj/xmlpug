@@ -1,10 +1,18 @@
 'use strict'
 
-const test = require('ava')
-const xmlpug = require('../lib/index')
-const xml = require('libxmljs2')
-const path = require('path')
 const {Buffer} = require('buffer')
+const fs = require('fs')
+const path = require('path')
+const test = require('ava')
+const xml = require('libxmljs2')
+const xmlpug = require('../lib/index')
+
+const TEST_PUG_SRC = path.join(__dirname, '..', 'examples', 'test.pug')
+const TEST_PUG_DATA = fs.readFileSync(TEST_PUG_SRC)
+const TEST_XML_SRC = path.join(__dirname, '..', 'examples', 'test.xml')
+const TEST_XML_DATA = fs.readFileSync(TEST_XML_SRC)
+const BAR_PUG_SRC = path.join(__dirname, 'bar.pug')
+const BAR_PUG_DATA = fs.readFileSync(BAR_PUG_SRC)
 
 test('transform', t => {
   t.truthy(xmlpug)
@@ -45,44 +53,42 @@ foot
 `)
 })
 
-test('transformFile', async t => {
-  const pug = path.join(__dirname, '..', 'examples', 'test.pug')
-  const xmlOut = path.join(__dirname, '..', 'examples', 'test.xml')
-  const out = await xmlpug.transformFile(pug, xmlOut, {
+test('defs', t => {
+  const out = xmlpug.transform(TEST_PUG_DATA, TEST_XML_DATA, {
+    pugFileName: TEST_PUG_SRC,
+    xmlFileName: TEST_XML_SRC,
     define: {
-      mode: 'nodeunit transformFile',
+      mode: 'defs test',
     },
   })
-  t.truthy(out)
+  t.is(typeof out, 'string')
+  t.regex(out, /<span>defs test<\/span>/)
 })
 
-test('xformBuffer', async t => {
+test('xformBuffer', t => {
   const buf = Buffer.from('<foo>boo</foo>')
-  const pug = path.join(__dirname, 'bar.pug')
-  const out = await xmlpug.transformFile(pug, buf)
-  t.truthy(out)
+  const out = xmlpug.transform(BAR_PUG_DATA, buf)
+  t.is(typeof out, 'string')
 })
 
-test('xformDoc', async t => {
+test('xformDoc', t => {
   const doc = xml.parseXml('<foo>boo</foo>')
-  const pug = path.join(__dirname, 'bar.pug')
-  const out = await xmlpug.transformFile(pug, doc)
-  t.truthy(out)
+  const out = xmlpug.transform(BAR_PUG_DATA, doc)
+  t.is(typeof out, 'string')
 })
 
-test('edges', async t => {
+test('edges', t => {
   const doc = xml.parseXml('<foo>boo</foo>')
-  const pug = path.join(__dirname, 'bar.pug')
-  t.throwsAsync(() => xmlpug.transformFile(pug, 0))
-  let out = await xmlpug.transformFile(pug, doc, {
+  t.throws(() => xmlpug.transform(BAR_PUG_DATA, 0))
+  let out = xmlpug.transform(BAR_PUG_DATA, doc, {
     pugFileName: 'none',
     xmlFilename: 'none',
   })
-  t.truthy(out)
+  t.is(typeof out, 'string')
 
-  out = await xmlpug.transformFile(pug, Buffer.from('<foo>boo</foo>'), {
+  out = xmlpug.transform(BAR_PUG_DATA, Buffer.from('<foo>boo</foo>'), {
     pugFileName: 'none',
     xmlFilename: 'none',
   })
-  t.truthy(out)
+  t.is(typeof out, 'string')
 })
