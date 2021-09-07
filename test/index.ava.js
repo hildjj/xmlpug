@@ -30,7 +30,7 @@ html
   '<root>testing <em>one</em> two</root>')
   t.truthy(out)
 
-  t.deepEqual(out, `\
+  t.is(out, `\
 <!DOCTYPE html>
 <html>
   <body>testing two<em>one</em>1one</body>
@@ -47,7 +47,7 @@ foot
   xml.parseXml('<root>testing <em>one</em> two</root>'))
   t.truthy(out)
 
-  t.deepEqual(out, `\
+  t.is(out, `\
 <?xml version='1.0'?>
 <foot>one</foot>
 `)

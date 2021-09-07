@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12, 14, 16]
-        platform: [ubuntu-latest]
+        platform: [ubuntu-latest, windows-latest]
 
     runs-on: ${{ matrix.platform }}
 
@@ -28,6 +28,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
+      - run: npm run lint
       - run: npm run coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
