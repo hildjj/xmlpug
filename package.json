@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@cto.af/eslint-config": "^0.0.8",
+    "@types/node": "^16.7.13",
     "ava": "^3.15.0",
     "eslint": "^7.32.0",
     "eslint-plugin-jsdoc": "^36.0.8",
@@ -50,11 +51,13 @@
     "eslint-plugin-ava": "^12.0.0",
     "libxmljs2": "^0.28.0",
     "pug": "3.0.2",
-    "resolve": "1.20"
+    "resolve": "1.20",
+    "typescript": "^4.4.2"
   },
   "engines": {
     "node": ">=12.19"
   },
+  "types": "types/lib/index.d.ts",
   "nyc": {
     "exclude": [
       "examples",
