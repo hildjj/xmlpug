@@ -28,14 +28,14 @@ test('corners', t => {
   t.truthy(!s.$att(baz, 'xmlns'))
   t.deepEqual(s.$att(baz, {b: 'nope', c: null}), {
     'b:b': 'bb',
-    b: 'nope',
-    c: '',
+    'b': 'nope',
+    'c': '',
   })
   t.deepEqual(s.$nsDecls(), {})
   t.deepEqual(s.$nsDecls(baz, {boo: 'urn:boo', c: null}), {
-    xmlns: 'urn:baz',
+    'xmlns': 'urn:baz',
     'xmlns:b': 'urn:b',
-    boo: 'urn:boo',
+    'boo': 'urn:boo',
   })
   t.is(s.$qname(baz), 'baz')
   t.is(s.$qname(s.$('c:boo', baz, {c: 'urn:b'})), 'b:boo')

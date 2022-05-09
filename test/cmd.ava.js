@@ -14,7 +14,7 @@ const PROLOG = [
 
 class Buf extends Transform {
   constructor(opts = {}) {
-    const { errorToThrow, ...others } = opts
+    const {errorToThrow, ...others} = opts
     super({
       ...others,
       encoding: 'utf8',
@@ -92,7 +92,7 @@ test('bad option', async t => {
   await t.throwsAsync(() => cli.main([
     ...PROLOG,
     '--output',
-  ]), { code: 'commander.optionMissingArgument' })
+  ]), {code: 'commander.optionMissingArgument'})
   t.is(
     cli.defaultErr.read(),
     'error: option \'-o, --output <file>\' argument missing\n'
@@ -103,7 +103,7 @@ test('bad option', async t => {
   await t.throwsAsync(() => cli2.main([
     ...PROLOG,
     '-D foo',
-  ]), { code: 'commander.invalidArgument'})
+  ]), {code: 'commander.invalidArgument'})
 })
 
 test('stdinout', async t => {
@@ -158,7 +158,7 @@ test('bad config', async t => {
       path.join(__dirname, 'bar.pug'),
       '-c',
       '.',
-    ]), { code: 'EISDIR' })
+    ]), {code: 'EISDIR'})
   }
 })
 
