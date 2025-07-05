@@ -3,16 +3,26 @@
   "version": "3.0.0",
   "description": "Transform XML documents with Pug templates",
   "main": "./lib/index.js",
+  "type": "module",
+  "types": "types/lib/index.d.ts",
+  "files": [
+    "bin",
+    "lib",
+    "types"
+  ],
   "scripts": {
-    "clean": "rimraf coverage .nyc_output",
-    "lint": "eslint . --ext js",
-    "coverage": "nyc -r lcov npm test",
-    "test": "ava test/*.ava.js",
-    "release": "npm version patch && git push --follow-tags && npm publish"
+    "clean": "rimraf -g coverage types docs examples/*.html",
+    "docs": "typedoc",
+    "lint": "eslint .",
+    "coverage": "c8 npm test",
+    "test": "ava --serial test/*.ava.js",
+    "types": "tsc",
+    "build": "npm run clean && npm run types && npm run lint && npm run docs && npm run coverage && npm pack --dry-run",
+    "version": "package-extract -s -o lib/version.js name version && git add lib/version.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hildjj/xmlpug"
+    "url": "git+https://github.com/hildjj/xmlpug.git"
   },
   "keywords": [
     "xml",
@@ -33,32 +43,32 @@
     "lib": "lib"
   },
   "bin": {
-    "xmlpug": "./bin/xmlpug"
+    "xmlpug": "bin/xmlpug.js"
   },
   "devDependencies": {
-    "@cto.af/eslint-config": "^0.0.8",
-    "ava": "^3.15.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-jsdoc": "^36.0.8",
+    "@cto.af/eslint-config": "^6.0.9",
+    "@eslint/markdown": "6.6.0",
+    "@types/node": "^24.0.10",
+    "@types/pug": "2.0.10",
+    "ava": "^6.4.0",
+    "c8": "10.1.3",
+    "eslint": "^9.30.1",
+    "eslint-plugin-ava": "^15.0.1",
+    "eslint-plugin-jsdoc": "^51.3.3",
     "eslint-plugin-node": "^11.1.0",
-    "nyc": "latest",
-    "rimraf": "^3.0.2"
+    "package-extract": "3.1.1",
+    "rimraf": "^6.0.1",
+    "typedoc": "0.28.7",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "commander": "8.1",
-    "dentin": "3.0",
-    "eslint-plugin-ava": "^12.0.0",
-    "libxmljs2": "^0.28.0",
-    "pug": "3.0.2",
-    "resolve": "1.20"
+    "commander": "^14.0.0",
+    "dentin": "^4.0.1",
+    "libxmljs2": "^0.37.0",
+    "pug": "^3.0.3"
   },
+  "packageManager": "pnpm@10.12.4",
   "engines": {
-    "node": ">=12.19"
-  },
-  "nyc": {
-    "exclude": [
-      "examples",
-      "test"
-    ]
+    "node": ">=22"
   }
 }

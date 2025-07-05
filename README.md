@@ -58,25 +58,33 @@ The added JavaScript features available in the template are:
 - `$$(string, element)`: perform an XPath query against the input document, returning all of the matches as an array.  Text nodes are converted to strings, and attribute nodes are converted to the string versions of their values. If no matches are found, returns `[]`.  If an element is provided, search within that element, otherwise search from the root of the input document.
 - `$att(element, string)`: gets the text value of an attribute from an element with the name specified in the string.  Returns `null` on errors.
 - `$source`: a Buffer containing the original XML source before parsing
-- `require(string)`: wrapper around normal node `require` allowing it to work in a template
+- `require(string)`: wrapper around normal node `require` allowing it to work in a template.  Can import ES6 modules that
+  have no async in the load path.
 - `version`: the name and version number of xmlpug
 
 # Command Line
 
+```
+Usage: xmlpug [options] <template> [input...]
 
-    Usage: xmlpug [options] <template> <input>
-
-    Options:
-
-      -h, --help           output usage information
-      -V, --version        output the version number
-      -d, --debug          Add Pug debug information
-      -o, --output [file]  Output file
-      -p, --pretty         Pretty print
+Options:
+  -V, --version               output the version number
+  -c, --config <file>         Config file to read (default: "./.xmlpug.json")
+  -C, --colors                Force color output
+  --no-colors                 Force non-color output
+  -d, --debug                 Add Pug debug information
+  -D, --define <name=string>  Define a global variable (default: {})
+  -o, --output <file>         Output file (default: "-")
+  -p, --pretty                Pretty print
+  -q, --doublequote           Use doublequotes instead of single
+  --html                      HTML output; only useful for pretty printing
+  --xml                       Force XML output for XHTML
+  -h, --help                  display help for command
+```
 
 # APIs
 
-Docs coming soon.
+Full [API docs](http://hildjj.github.io/xmlpug/) are available.
 
 [![Tests](https://github.com/hildjj/xmlpug/actions/workflows/node.js.yml/badge.svg)](https://github.com/hildjj/xmlpug/actions/workflows/node.js.yml)
 [![codecov](https://codecov.io/gh/hildjj/xmlpug/branch/main/graph/badge.svg?token=FkJe6b3bIS)](https://codecov.io/gh/hildjj/xmlpug)

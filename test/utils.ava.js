@@ -1,8 +1,6 @@
-'use strict'
-
-const test = require('ava')
-const {combine} = require('../lib/utils')
+import {combine} from '../lib/utils.js';
+import test from 'ava';
 
 test('combine', t => {
-  t.throws(() => combine({a: Symbol('a')}, {a: 'a'}))
-})
+  t.throws(() => combine({a: Symbol('a')}, {a: 'a'}));
+});

@@ -17,7 +17,7 @@ html(lang='en')
       span= JSON.stringify(defs)
     - var util = require('util')
     p= util.format("one:%d", 2)
-    - var test = require('./test')
+    - var test = require('./test.cjs')
     p= test.stuff()
     h2 Loop
       each s in $$('middle/section')

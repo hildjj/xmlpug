@@ -1,0 +1,16 @@
+{
+  "include": ["lib/*.js"],
+
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "outDir": "types",
+    "target": "ES2022",
+    "resolveJsonModule": true
+  }
+}

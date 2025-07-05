@@ -1,7 +1,5 @@
 // Example of how to call the API
 
-'use strict'
-
 // TODO: rewrite with new API when done
 
 // const xmlpug = require('../')

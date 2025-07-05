@@ -2,7 +2,9 @@
 .nyc_output
 .vscode/
 coverage
+docs/
 examples/*.html
 node_modules
 npm-debug.log
 TAGS
+types/
