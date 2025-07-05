@@ -21,6 +21,7 @@ jobs:
       OS: ${{ matrix.os }}
       NODE: ${{ matrix.node-version }}
     steps:
+      - run: git config --global core.autocrlf input
       - uses: actions/checkout@v4
       - name: Install pnpm
         uses: pnpm/action-setup@v4
