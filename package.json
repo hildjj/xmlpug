@@ -11,7 +11,7 @@
     "types"
   ],
   "scripts": {
-    "clean": "rimraf coverage types docs examples/*.html",
+    "clean": "rimraf -g coverage types docs examples/*.html",
     "docs": "typedoc",
     "lint": "eslint .",
     "coverage": "c8 npm test",
