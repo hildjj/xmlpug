@@ -163,6 +163,7 @@ test('bad config', async t => {
   if (['freebsd', 'openbsd'].indexOf(process.platform) === -1) {
     const cli3 = new XmlPugCommand();
     cli3.exitOverride();
+    // eslint-disable-next-line ava/no-conditional-assertion
     await t.throwsAsync(() => cli3.main([
       ...PROLOG,
       join(__dirname, 'bar.pug'),
