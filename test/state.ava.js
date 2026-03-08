@@ -4,8 +4,8 @@ import state from '../lib/state.js';
 import test from 'ava';
 
 test('corners', t => {
-  const src =
-`<foo>
+  const src = `\
+<foo>
   <bar/>
   <bar/>
   <baz xmlns="urn:baz" xmlns:b="urn:b" b:b="bb" c="">
@@ -26,7 +26,7 @@ test('corners', t => {
   t.is(s.$element('foo', 'bar').toString(), '<foo>bar</foo>');
   const baz = s.$('u:baz', {u: 'urn:baz'});
   t.truthy(baz);
-  t.truthy(!s.$att(baz, 'xmlns'));
+  t.falsy(s.$att(baz, 'xmlns'));
   t.deepEqual(s.$att(baz, {b: 'nope', c: null}), {
     'b:b': 'bb',
     'b': 'nope',
