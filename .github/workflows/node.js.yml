@@ -1,44 +1,14 @@
----
 name: Tests
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   build:
-
-    strategy:
-      matrix:
-        node-version: [22, 24, 25]
-        platform: [ubuntu-latest, windows-latest]
-
-    runs-on: ${{ matrix.platform }}
-
-    env:
-      OS: ${{ matrix.os }}
-      NODE: ${{ matrix.node-version }}
-    steps:
-      - run: git config --global core.autocrlf input
-      - uses: actions/checkout@v6
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
-      - run: pnpm install
-      - run: npm run build
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/lcov.info
-          env_vars: OS,NODE
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
-
+    uses: cto-af/workflows/.github/workflows/node-ci.yml@main
+    with:
+      platforms: '["ubuntu-latest", "macos-latest", "windows-latest"]'
+      versions: '[22, 24, 25]'
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
